@@ -1,3 +1,29 @@
+@import '../../styles/config.scss';
+
+.wrapper {
+  display: flex;
+  padding: 0 1rem;
+  height: 80px;
+  background: $headerBackground;
+  color: $headerColor;
+  align-items: center;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 40px;
+  margin-right: 1rem;
+}
+
+.menuWrapper {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
 .activeRoute {
   font-weight: bold;
   text-decoration: underline;
