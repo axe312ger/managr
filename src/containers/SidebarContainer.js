@@ -1,5 +1,7 @@
 import { connect } from 'react-redux'
 
+import { getTree } from 'redux/modules/Files'
+
 import Sidebar from 'components/Sidebar'
 
 const mapStateToProps = (state) => ({
@@ -7,4 +9,12 @@ const mapStateToProps = (state) => ({
   lastUpdated: state.files.lastUpdated
 })
 
-export default connect(mapStateToProps)(Sidebar)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePath: (path) => {
+      dispatch(getTree(path))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)

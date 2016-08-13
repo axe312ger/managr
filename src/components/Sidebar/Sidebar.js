@@ -9,7 +9,7 @@ export const Sidebar = (props) => {
   }
 
   const folders = props.files.children.map((file) => (
-    <Folder key={file.name} file={file} />
+    <Folder key={file.name} file={file} changePath={props.changePath} />
   ))
 
   return (
@@ -20,7 +20,8 @@ export const Sidebar = (props) => {
 }
 
 Sidebar.propTypes = {
-  files: React.PropTypes.object.isRequired
+  files: React.PropTypes.object.isRequired,
+  changePath: React.PropTypes.func.isRequired
 }
 
 export default Sidebar
