@@ -4,8 +4,12 @@ import classes from './Sidebar.scss'
 import Folder from './Folder'
 
 export const Sidebar = (props) => {
-  const folders = props.files.map((file) => (
-    <Folder key={file.filename} file={file} />
+  if (!props.files.children) {
+    return <p>nope</p>
+  }
+
+  const folders = props.files.children.map((file) => (
+    <Folder key={file.name} file={file} />
   ))
 
   return (
@@ -16,7 +20,7 @@ export const Sidebar = (props) => {
 }
 
 Sidebar.propTypes = {
-  files: React.PropTypes.array.isRequired
+  files: React.PropTypes.object.isRequired
 }
 
 export default Sidebar

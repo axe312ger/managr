@@ -10,7 +10,7 @@ export const Folder = (props) => (
       <img src={folderEmpty} />
     </div>
     <div className={classes.title}>
-      {props.file.filename}
+      {props.file.name}
     </div>
   </div>
 )

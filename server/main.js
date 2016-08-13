@@ -13,6 +13,8 @@ import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
 import tree from './lib/tree'
 
+import { GET_TREE, treeLoaded } from '../src/redux/modules/Files'
+
 const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
@@ -26,10 +28,10 @@ io.on('connection', (socket) => {
 
   socket.on('action', (action) => {
     console.log(action)
-    if (action.type === 'server/getTree') {
+    if (action.type === GET_TREE) {
       return tree('blueprints')
         .then((fileTree) => {
-          socket.emit('action', { type: 'FILE_TREE', tree: fileTree })
+          socket.emit('action', treeLoaded(fileTree))
         })
     }
   })

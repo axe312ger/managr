@@ -1,35 +1,31 @@
-import { loadFiles } from 'api'
-
 // Constants
-
-export const FILES_LOAD = 'managr/files/load'
-export const FILES_LOADED = 'managr/files/loaded'
+export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
 
 // Action Creators
-export function filesLoaded (files) {
+export function treeLoaded (files) {
   return {
-    type: FILES_LOADED,
+    type: TREE_LOADED,
     files
   }
 }
 
-export function filesLoad (path = '/') {
-  return function (dispatch) {
-    return loadFiles()
-    .then(files => dispatch(filesLoaded(files)))
+export function getTree (path = '/') {
+  return {
+    type: GET_TREE,
+    path
   }
 }
 
 // Reducer
 export const defaultState = {
-  files: [],
+  files: {},
   lastUpdated: -1
 }
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case FILES_LOADED:
+    case TREE_LOADED:
       return {
         ...state,
         files: action.files,

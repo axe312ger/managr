@@ -1,42 +1,39 @@
 import React from 'react'
 
-export const FilesTable = (props) => {
-  console.log('props', props)
+export const FilesTable = React.createClass({
+  render () {
+    if (!this.props.files.children) {
+      return <div>Sorry, no files loaded yet</div>
+    }
 
-  if (!props.files.length) {
-    return <div>Sorry, no files loaded yet</div>
-  }
+    const filesList = this.props.files.children.reduce((filesList, file) => {
+      filesList.push(
+        <tr key={file.name}>
+          <td>{file.name}</td>
+        </tr>
+      )
+      return filesList
+    }, [])
 
-  const filesList = props.files.reduce((filesList, file) => {
-    const actions = file.actions.reduce((actionList, action) => [
-      ...actionList,
-      <a href='#' key={action.id}>{action.title}</a>
-    ], [])
-
-    filesList.push(
-      <tr key={file.filename}>
-        <td>{file.filename}</td>
-        <td>{actions}</td>
-      </tr>
+    return (
+      <div>
+        <p>Last update: { this.props.lastUpdated }</p>
+        <table>
+          <tbody>
+            { filesList }
+          </tbody>
+        </table>
+      </div>
     )
-    return filesList
-  }, [])
-
-  return (
-    <div>
-      <p>Last update: { props.lastUpdated }</p>
-      <table>
-        <tbody>
-          { filesList }
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-FilesTable.propTypes = {
-  files: React.PropTypes.array.isRequired,
-  lastUpdated: React.PropTypes.number.isRequired
-}
+  },
+  componentWillMount: function () {
+    this.props.getTree()
+  },
+  propTypes: {
+    files: React.PropTypes.object.isRequired,
+    lastUpdated: React.PropTypes.number.isRequired,
+    getTree: React.PropTypes.func.isRequired
+  }
+})
 
 export default FilesTable
