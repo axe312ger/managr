@@ -1,0 +1,45 @@
+@import '../../../styles/config';
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    color: $mediumGrey;
+    font-weight: normal;
+    text-align: left;
+  }
+
+  td, th {
+    padding: 0 1rem;
+  }
+
+  tbody {
+    tr {
+      min-height: 60px;
+      border-top: 0.5rem solid $background;
+      background: $backgroundExposed;
+
+      &:first-child {
+        border-top: none;
+      }
+
+      td {
+        white-space: nowrap;
+
+        &:first-child {
+          width: 50px;
+          padding-right: 0;
+          text-align: center;
+
+          img {
+            width: 40px;
+          }
+        }
+        &:nth-child(2) {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

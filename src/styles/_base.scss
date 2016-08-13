@@ -1,12 +1,14 @@
-/*
-Application Settings Go Here
-------------------------------------
-This file acts as a bundler for all variables/mixins/themes, so they
-can easily be swapped out without `core.scss` ever having to know.
+@import './config';
 
-For example:
+html, body {
+  color: $mainColor;
+}
 
-@import './variables/colors';
-@import './variables/components';
-@import './themes/default';
-*/
+a {
+  color: $brand;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

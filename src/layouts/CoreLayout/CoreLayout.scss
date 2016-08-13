@@ -8,6 +8,9 @@
 
 .mainContainer {
   padding: 1rem;
+  flex: 1 1 auto;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .main {
@@ -16,12 +19,13 @@
 }
 
 .sidebar {
-  min-width: 12rem;
+  min-width: 16rem;
   width: 25vw;
 
-  padding: 0 1rem;
-
   overflow: hidden;
+  overflow-y: auto;
+
+  padding: 0 1rem;
 
   border-right: 3px solid $mediumGrey;
 }
