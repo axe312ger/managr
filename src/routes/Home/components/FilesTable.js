@@ -4,6 +4,7 @@ import { distanceInWordsToNow, format } from 'date-fns'
 import filesize from 'filesize'
 
 import Icon from 'components/Icon'
+import NodeTitle from 'components/NodeTitle'
 
 import classes from './FilesTable.scss'
 
@@ -28,7 +29,7 @@ export const FilesTable = React.createClass({
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>
-          <td>{file.name}</td>
+          <td><NodeTitle file={file} /></td>
           <td>{'children' in file ? null : size}</td>
           <td title={times.created.default}>{times.created.fromNow}</td>
           <td title={times.modified.default}>{times.modified.fromNow}</td>

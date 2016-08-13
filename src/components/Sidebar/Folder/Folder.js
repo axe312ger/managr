@@ -2,6 +2,7 @@ import React from 'react'
 import classes from './Folder.scss'
 
 import Icon from 'components/Icon'
+import NodeTitle from 'components/NodeTitle'
 
 export const Folder = (props) => {
   const changePath = () => {
@@ -12,12 +13,12 @@ export const Folder = (props) => {
   const wrapperClass = 'children' in props.file ? classes.wrapperClickable : classes.wrapper
 
   return (
-    <div className={wrapperClass} onClick={changePath} title={props.file.name}>
+    <div className={wrapperClass} onClick={changePath}>
       <div className={classes.icon}>
         <Icon file={props.file} />
       </div>
       <div className={classes.title}>
-        {props.file.name}
+        <NodeTitle file={props.file} />
       </div>
     </div>
   )

@@ -25,6 +25,7 @@
       }
 
       td {
+        width: auto;
         white-space: nowrap;
 
         &:first-child {
@@ -38,6 +39,9 @@
         }
         &:nth-child(2) {
           width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
