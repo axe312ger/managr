@@ -1,6 +1,6 @@
 import React from 'react'
 
-import moment from 'moment'
+import { distanceInWordsToNow, format } from 'date-fns'
 import filesize from 'filesize'
 
 import Icon from 'components/Icon'
@@ -17,19 +17,19 @@ export const FilesTable = React.createClass({
       const size = filesize(file.stats.size, {bits: true})
       const times = {
         created: {
-          default: moment(file.stats.created).format('MMMM Do YYYY, h:mm:ss a'),
-          fromNow: moment(file.stats.created).fromNow()
+          default: format(file.stats.created, 'MMMM Do YYYY, h:mm:ss a'),
+          fromNow: distanceInWordsToNow(file.stats.created, { includeSeconds: true }) + ' ago'
         },
         modified: {
-          default: moment(file.stats.modified).format('MMMM Do YYYY, h:mm:ss a'),
-          fromNow: moment(file.stats.modified).fromNow()
+          default: format(file.stats.modified, 'MMMM Do YYYY, h:mm:ss a'),
+          fromNow: distanceInWordsToNow(file.stats.modified, { includeSeconds: true }) + ' ago'
         }
       }
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>
           <td>{file.name}</td>
-          <td>{'children' in file ? size : null}</td>
+          <td>{'children' in file ? null : size}</td>
           <td title={times.created.default}>{times.created.fromNow}</td>
           <td title={times.modified.default}>{times.modified.fromNow}</td>
         </tr>
@@ -38,8 +38,8 @@ export const FilesTable = React.createClass({
 
     return (
       <div>
-        <h1>Working directory: {this.props.node.name}</h1>
-        <h4>Contains { this.props.node.children.length } nodes.</h4>
+        <h1>{this.props.node.name}</h1>
+        <h4>Path {this.props.node.path} with { this.props.node.children.length } nodes.</h4>
         <table className={classes.table}>
           <thead>
             <tr>

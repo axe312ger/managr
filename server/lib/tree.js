@@ -1,7 +1,7 @@
 import co from 'co'
 import fs from 'co-fs-extra'
 import mime from 'mime-types'
-import { join } from 'path'
+import { join, basename } from 'path'
 
 const ROOT_PATH = 'content'
 
@@ -20,11 +20,13 @@ function filterStats (stats) {
 
 function * createItem (path) {
   const stats = yield fs.stat(path)
+  const name = basename(path)
 
   if (!stats.isDirectory()) {
     return {
-      name: path,
-      stats: Object.assign({}, filterStats(stats), { mime: mime.lookup(path) })
+      name,
+      path,
+      stats: { ...filterStats(stats), mime: mime.lookup(path) }
     }
   }
 
@@ -35,7 +37,8 @@ function * createItem (path) {
   })
 
   return {
-    name: path,
+    name,
+    path,
     stats: filterStats(stats),
     children
   }

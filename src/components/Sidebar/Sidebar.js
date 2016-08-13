@@ -9,8 +9,7 @@ export const Sidebar = (props) => {
   }
 
   let backButton = null
-  // @todo: remove true when after merge
-  if (props.path.length > 1) {
+  if (props.path.length) {
     const fakeFile = {
       name: '..',
       children: []
@@ -19,7 +18,7 @@ export const Sidebar = (props) => {
   }
 
   const folders = props.node.children.map((file) => (
-    <Folder key={file.name} file={file} changePath={props.changePath} />
+    <Folder key={file.name} file={file} changePath={props.pushDir} />
   ))
 
   return (
@@ -33,6 +32,7 @@ export const Sidebar = (props) => {
 Sidebar.propTypes = {
   node: React.PropTypes.object.isRequired,
   changePath: React.PropTypes.func.isRequired,
+  pushDir: React.PropTypes.func.isRequired,
   popDir: React.PropTypes.func.isRequired
 }
 

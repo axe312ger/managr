@@ -2,6 +2,7 @@
 export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
 export const CHANGE_PATH = 'managr/changePath'
+export const PUSH_DIR = 'managr/pushDir'
 export const POP_DIR = 'managr/popDir'
 
 // Action Creators
@@ -22,6 +23,13 @@ export function changePath (path) {
   return {
     type: CHANGE_PATH,
     path
+  }
+}
+
+export function pushDir (dir) {
+  return {
+    type: PUSH_DIR,
+    dir
   }
 }
 
@@ -56,6 +64,13 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         path
+      }
+    case PUSH_DIR:
+      const { dir } = action
+      const nextPath = [...state.path, dir]
+      return {
+        ...state,
+        path: nextPath
       }
     case POP_DIR:
       return {
