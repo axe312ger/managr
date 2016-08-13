@@ -4,9 +4,9 @@ import { loadFiles } from 'api'
 
 export const FILES_LOAD = 'managr/files/load'
 export const FILES_LOADED = 'managr/files/loaded'
+export const GET_TREE = 'server/getTree'
 
 // Action Creators
-
 export function filesLoaded (files) {
   return {
     type: FILES_LOADED,
