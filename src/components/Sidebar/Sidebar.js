@@ -5,7 +5,7 @@ import Folder from './Folder'
 
 export const Sidebar = (props) => {
   const folders = props.files.map((file) => (
-    <Folder key={file.name} file={file} />
+    <Folder key={file.filename} file={file} />
   ))
 
   return (
