@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { getTree } from 'redux/modules/Files'
 import { folder } from 'redux/selectors/tree'
 
-import FilesTable from 'components/FilesTable'
+import FilesTable from '../components/FilesTable'
 
 const mapStateToProps = (state) => {
   const node = folder(state) || {}
