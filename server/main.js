@@ -1,4 +1,6 @@
+import http from 'http'
 import Koa from 'koa'
+import socket from 'socket.io'
 import convert from 'koa-convert'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
@@ -9,10 +11,35 @@ import _debug from 'debug'
 import config from '../config'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
+import tree from './lib/tree'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
+const server = http.createServer(app.callback())
+const io = socket()
+
+io.attach(server)
+
+io.on('connection', (socket) => {
+  console.log('Socket connected:', socket.id)
+
+  socket.on('action', (action) => {
+    console.log(action)
+    if (action.type === 'server/getTree') {
+      return tree('blueprints')
+        .then((fileTree) => {
+          socket.emit('action', { type: 'FILE_TREE', tree: fileTree })
+        })
+    }
+  })
+
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected', socket.id)
+  })
+
+  socket.on('error', (e) => console.error(e.stack))
+})
 
 // Enable koa-proxy if it has been enabled in the config.
 if (config.proxy && config.proxy.enabled) {
@@ -58,4 +85,4 @@ if (config.env === 'development') {
   app.use(serve(paths.dist()))
 }
 
-export default app
+export default server

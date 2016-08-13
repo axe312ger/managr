@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import FilesTable from 'components/FilesTable'
 
 const mapStateToProps = (state) => ({
-  files: state.files.files,
+  files: state.files.files || [],
   lastUpdated: state.files.lastUpdated
 })
 
