@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
   socket.on('action', (action) => {
     console.log(action)
     if (action.type === GET_TREE) {
-      return tree('blueprints')
+      return tree('src')
         .then((fileTree) => {
           socket.emit('action', treeLoaded(fileTree))
         })
