@@ -1,10 +1,9 @@
 import React from 'react'
 
-import filesize from 'filesize'
-
 import Icon from 'components/Icon'
 import NodeTitle from 'components/NodeTitle'
 import NodeTimestamp from 'components/NodeTimestamp'
+import NodeSize from 'components/NodeSize'
 
 import classes from './FilesTable.scss'
 
@@ -15,13 +14,12 @@ export const FilesTable = React.createClass({
     }
 
     const filesList = this.props.node.children.map((file) => {
-      const size = filesize(file.stats.size, {bits: true})
-
+      const size = 'children' in file ? null : <NodeSize size={file.stats.size} />
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>
           <td><NodeTitle file={file} /></td>
-          <td>{'children' in file ? null : size}</td>
+          <td>{size}</td>
           <td><NodeTimestamp timestamp={file.stats.created} /></td>
           <td><NodeTimestamp timestamp={file.stats.modified} /></td>
         </tr>
