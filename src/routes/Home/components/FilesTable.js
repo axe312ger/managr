@@ -1,6 +1,6 @@
 import React from 'react'
 
-import moment from 'moment'
+import { distanceInWordsToNow, format } from 'date-fns'
 import filesize from 'filesize'
 
 import Icon from 'components/Icon'
@@ -17,12 +17,12 @@ export const FilesTable = React.createClass({
       const size = filesize(file.stats.size, {bits: true})
       const times = {
         created: {
-          default: moment(file.stats.created).format('MMMM Do YYYY, h:mm:ss a'),
-          fromNow: moment(file.stats.created).fromNow()
+          default: format(file.stats.created, 'MMMM Do YYYY, h:mm:ss a'),
+          fromNow: distanceInWordsToNow(file.stats.created, { includeSeconds: true })
         },
         modified: {
-          default: moment(file.stats.modified).format('MMMM Do YYYY, h:mm:ss a'),
-          fromNow: moment(file.stats.modified).fromNow()
+          default: format(file.stats.modified, 'MMMM Do YYYY, h:mm:ss a'),
+          fromNow: distanceInWordsToNow(file.stats.modified, { includeSeconds: true })
         }
       }
       return (
