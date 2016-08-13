@@ -1,13 +1,18 @@
 import { connect } from 'react-redux'
 
 import { getTree } from 'redux/modules/Files'
+import { folder } from 'redux/selectors/tree'
 
 import FilesTable from 'components/FilesTable'
 
-const mapStateToProps = (state) => ({
-  files: state.files.files,
-  lastUpdated: state.files.lastUpdated
-})
+const mapStateToProps = (state) => {
+  const node = folder(state) || {}
+
+  return {
+    node,
+    lastUpdated: node.lastUpdated || (node.stats && node.stats.modified)
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {

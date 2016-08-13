@@ -4,13 +4,13 @@ import classes from './Sidebar.scss'
 import Folder from './Folder'
 
 export const Sidebar = (props) => {
-  if (!props.files.children) {
+  if (!props.node.children) {
     return <p>nope</p>
   }
 
   let backButton = null
   // @todo: remove true when after merge
-  if (true || (props.files.name.match(/\//g) || []).length) {
+  if (props.path.length > 1) {
     const fakeFile = {
       name: '..',
       children: []
@@ -18,7 +18,7 @@ export const Sidebar = (props) => {
     backButton = <Folder key={fakeFile.name} file={fakeFile} changePath={props.popDir} />
   }
 
-  const folders = props.files.children.map((file) => (
+  const folders = props.node.children.map((file) => (
     <Folder key={file.name} file={file} changePath={props.changePath} />
   ))
 
@@ -31,7 +31,7 @@ export const Sidebar = (props) => {
 }
 
 Sidebar.propTypes = {
-  files: React.PropTypes.object.isRequired,
+  node: React.PropTypes.object.isRequired,
   changePath: React.PropTypes.func.isRequired,
   popDir: React.PropTypes.func.isRequired
 }

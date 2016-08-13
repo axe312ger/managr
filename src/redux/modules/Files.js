@@ -5,10 +5,10 @@ export const CHANGE_PATH = 'managr/changePath'
 export const POP_DIR = 'managr/popDir'
 
 // Action Creators
-export function treeLoaded (files) {
+export function treeLoaded (tree) {
   return {
     type: TREE_LOADED,
-    files
+    tree
   }
 }
 
@@ -33,8 +33,8 @@ export function popDir () {
 
 // Reducer
 export const defaultState = {
-  files: {},
-  path: '/',
+  tree: {},
+  path: [],
   lastUpdated: -1
 }
 
@@ -43,13 +43,24 @@ export default function (state = defaultState, action) {
     case TREE_LOADED:
       return {
         ...state,
-        files: action.files,
+        tree: action.tree,
         lastUpdated: Date.now()
       }
     case CHANGE_PATH:
+      let { path } = action
+
+      if (typeof path === 'string') {
+        path = path.split('/')
+      }
+
       return {
         ...state,
-        path: action.path
+        path
+      }
+    case POP_DIR:
+      return {
+        ...state,
+        path: state.path.slice(0, state.path.length - 1)
       }
     default:
       return state
