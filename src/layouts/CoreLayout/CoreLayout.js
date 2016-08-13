@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from '../../components/Header'
-import Sidebar from '../../components/Sidebar'
+import Header from 'components/Header'
+import Sidebar from 'containers/SidebarContainer'
 import classes from './CoreLayout.scss'
 import '../../styles/core.scss'
 

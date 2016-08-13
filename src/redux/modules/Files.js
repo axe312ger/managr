@@ -30,9 +30,11 @@ export const defaultState = {
 export default function (state = defaultState, action) {
   switch (action.type) {
     case FILES_LOADED:
-      state.files = action.files
-      state.lastUpdated = Date.now()
-      return state
+      return {
+        ...state,
+        files: action.files,
+        lastUpdated: Date.now()
+      }
     default:
       return state
   }

@@ -1,11 +1,5 @@
 @import '../../styles/config.scss';
 
-.activeRoute {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.logo {
-  width: 200px;
-  background: $brand;
+.wrapper {
+  padding-top: 2rem;
 }

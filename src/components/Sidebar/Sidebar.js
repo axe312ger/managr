@@ -1,10 +1,22 @@
 import React from 'react'
-// import classes from './Sidebar.scss'
+import classes from './Sidebar.scss'
 
-export const Sidebar = () => (
-  <div>
-    <h2>@todo Sidebar</h2>
-  </div>
-)
+import Folder from './Folder'
+
+export const Sidebar = (props) => {
+  const folders = props.files.map((file) => (
+    <Folder key={file.name} file={file} />
+  ))
+
+  return (
+    <div className={classes.wrapper}>
+      {folders}
+    </div>
+  )
+}
+
+Sidebar.propTypes = {
+  files: React.PropTypes.array.isRequired
+}
 
 export default Sidebar
