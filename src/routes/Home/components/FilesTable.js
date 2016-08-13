@@ -18,18 +18,18 @@ export const FilesTable = React.createClass({
       const times = {
         created: {
           default: format(file.stats.created, 'MMMM Do YYYY, h:mm:ss a'),
-          fromNow: distanceInWordsToNow(file.stats.created, { includeSeconds: true })
+          fromNow: distanceInWordsToNow(file.stats.created, { includeSeconds: true }) + ' ago'
         },
         modified: {
           default: format(file.stats.modified, 'MMMM Do YYYY, h:mm:ss a'),
-          fromNow: distanceInWordsToNow(file.stats.modified, { includeSeconds: true })
+          fromNow: distanceInWordsToNow(file.stats.modified, { includeSeconds: true }) + ' ago'
         }
       }
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>
           <td>{file.name}</td>
-          <td>{'children' in file ? size : null}</td>
+          <td>{'children' in file ? null : size}</td>
           <td title={times.created.default}>{times.created.fromNow}</td>
           <td title={times.modified.default}>{times.modified.fromNow}</td>
         </tr>
