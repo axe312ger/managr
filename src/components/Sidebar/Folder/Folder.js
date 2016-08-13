@@ -3,9 +3,13 @@ import classes from './Folder.scss'
 
 import folderEmpty from './assets/folder-empty.svg'
 import folderFull from './assets/folder-full.svg'
+import document from './assets/document.svg'
 
 export const Folder = (props) => {
-  const icon = <img src={'children' in props.file ? folderFull : folderEmpty} />
+  const selectFolderIcon = (children) => {
+    return children.length ? folderFull : folderEmpty
+  }
+  const icon = 'children' in props.file ? selectFolderIcon(props.file.children) : document
   const changePath = () => {
     if ('children' in props.file) {
       props.changePath(props.file.name)
@@ -16,7 +20,7 @@ export const Folder = (props) => {
   return (
     <div className={wrapperClass} onClick={changePath}>
       <div className={classes.icon}>
-        {icon}
+        <img src={icon} />
       </div>
       <div className={classes.title}>
         {props.file.name}
