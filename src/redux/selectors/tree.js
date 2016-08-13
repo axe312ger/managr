@@ -8,14 +8,12 @@ export const folder = createSelector(tree, path, (tree, path) => {
     return {}
   }
 
-  const [, ...folders] = path
-
-  return folders.reduce((node, folder) => {
+  return path.reduce((node, folder) => {
     if (!folder) {
       return node
     }
 
     const { children } = node
-    return children.find((child) => child.name.indexOf(folder) !== -1)
+    return children.find((child) => child.name === folder)
   }, tree)
 })
