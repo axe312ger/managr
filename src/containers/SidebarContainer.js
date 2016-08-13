@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { changePath } from 'redux/modules/Files'
+import { changePath, popDir } from 'redux/modules/Files'
 
 import Sidebar from 'components/Sidebar'
 
@@ -13,6 +13,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     changePath: (path) => {
       dispatch(changePath(path))
+    },
+    popDir: () => {
+      dispatch(popDir())
     }
   }
 }

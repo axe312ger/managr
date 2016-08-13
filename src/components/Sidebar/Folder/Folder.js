@@ -5,13 +5,13 @@ import folderEmpty from './assets/folder-empty.svg'
 import folderFull from './assets/folder-full.svg'
 
 export const Folder = (props) => {
-  const icon = <img src={props.file.children ? folderFull : folderEmpty} />
+  const icon = <img src={'children' in props.file ? folderFull : folderEmpty} />
   const changePath = () => {
-    if (props.file.children) {
+    if ('children' in props.file) {
       props.changePath(props.file.name)
     }
   }
-  const wrapperClass = props.file.children ? classes.wrapperClickable : classes.wrapper
+  const wrapperClass = 'children' in props.file ? classes.wrapperClickable : classes.wrapper
 
   return (
     <div className={wrapperClass} onClick={changePath}>
