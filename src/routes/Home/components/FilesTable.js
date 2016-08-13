@@ -5,6 +5,8 @@ import filesize from 'filesize'
 
 import Icon from 'components/Icon'
 
+import classes from './FilesTable.scss'
+
 export const FilesTable = React.createClass({
   render () {
     if (!this.props.node.children) {
@@ -36,8 +38,18 @@ export const FilesTable = React.createClass({
 
     return (
       <div>
-        <p>Last update: { this.props.lastUpdated }</p>
-        <table>
+        <h1>Working directory: {this.props.node.name}</h1>
+        <h4>Contains { this.props.node.children.length } nodes.</h4>
+        <table className={classes.table}>
+          <thead>
+            <tr>
+              <th />
+              <th>Name</th>
+              <th>Size</th>
+              <th>Created</th>
+              <th>Modified</th>
+            </tr>
+          </thead>
           <tbody>
             { filesList }
           </tbody>

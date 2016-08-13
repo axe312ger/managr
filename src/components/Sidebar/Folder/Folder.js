@@ -12,7 +12,7 @@ export const Folder = (props) => {
   const wrapperClass = 'children' in props.file ? classes.wrapperClickable : classes.wrapper
 
   return (
-    <div className={wrapperClass} onClick={changePath}>
+    <div className={wrapperClass} onClick={changePath} title={props.file.name}>
       <div className={classes.icon}>
         <Icon file={props.file} />
       </div>
