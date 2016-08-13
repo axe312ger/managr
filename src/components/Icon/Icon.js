@@ -15,7 +15,7 @@ const Icon = (props) => {
 }
 
 Icon.propTypes = {
-  file: React.PropTypes
+  file: React.PropTypes.object
 }
 
 export default Icon

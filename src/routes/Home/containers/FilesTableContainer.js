@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 
   return {
     node,
-    lastUpdated: node.lastUpdated || (node.stats && node.stats.modified)
+    lastUpdated: node.lastUpdated || 0
   }
 }
 

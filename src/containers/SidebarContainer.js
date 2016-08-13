@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
   return {
     node,
     path: path(state),
-    lastUpdated: node.lastUpdated || (node.stats && node.stats.modified)
+    lastUpdated: node.lastUpdated || 0
   }
 }
 
