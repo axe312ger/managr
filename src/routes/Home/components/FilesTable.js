@@ -3,6 +3,8 @@ import React from 'react'
 import moment from 'moment'
 import filesize from 'filesize'
 
+import Icon from 'components/Icon'
+
 export const FilesTable = React.createClass({
   render () {
     if (!this.props.node.children) {
@@ -23,6 +25,7 @@ export const FilesTable = React.createClass({
       }
       return (
         <tr key={file.name}>
+          <td><Icon file={file} /></td>
           <td>{file.name}</td>
           <td>{'children' in file ? size : null}</td>
           <td title={times.created.default}>{times.created.fromNow}</td>
