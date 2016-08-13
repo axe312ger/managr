@@ -1,5 +1,8 @@
 import React from 'react'
 
+import moment from 'moment'
+import filesize from 'filesize'
+
 export const FilesTable = React.createClass({
   render () {
     if (!this.props.node.children) {
@@ -7,9 +10,23 @@ export const FilesTable = React.createClass({
     }
 
     const filesList = this.props.node.children.map((file) => {
+      const size = filesize(file.stats.size, {bits: true})
+      const times = {
+        created: {
+          default: moment(file.stats.created).format('MMMM Do YYYY, h:mm:ss a'),
+          fromNow: moment(file.stats.created).fromNow()
+        },
+        modified: {
+          default: moment(file.stats.modified).format('MMMM Do YYYY, h:mm:ss a'),
+          fromNow: moment(file.stats.modified).fromNow()
+        }
+      }
       return (
         <tr key={file.name}>
           <td>{file.name}</td>
+          <td>{'children' in file ? size : null}</td>
+          <td title={times.created.default}>{times.created.fromNow}</td>
+          <td title={times.modified.default}>{times.modified.fromNow}</td>
         </tr>
       )
     })
