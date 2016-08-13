@@ -1,6 +1,7 @@
 // Constants
 export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
+export const CHANGE_PATH = 'server/changePath'
 
 // Action Creators
 export function treeLoaded (files) {
@@ -10,9 +11,15 @@ export function treeLoaded (files) {
   }
 }
 
-export function getTree (path = '/') {
+export function getTree () {
   return {
-    type: GET_TREE,
+    type: GET_TREE
+  }
+}
+
+export function changePath (path) {
+  return {
+    type: CHANGE_PATH,
     path
   }
 }
@@ -20,6 +27,7 @@ export function getTree (path = '/') {
 // Reducer
 export const defaultState = {
   files: {},
+  path: '/',
   lastUpdated: -1
 }
 
@@ -30,6 +38,11 @@ export default function (state = defaultState, action) {
         ...state,
         files: action.files,
         lastUpdated: Date.now()
+      }
+    case CHANGE_PATH:
+      return {
+        ...state,
+        path: action.path
       }
     default:
       return state

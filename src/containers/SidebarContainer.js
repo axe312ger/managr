@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { getTree } from 'redux/modules/Files'
+import { changePath } from 'redux/modules/Files'
 
 import Sidebar from 'components/Sidebar'
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     changePath: (path) => {
-      dispatch(getTree(path))
+      dispatch(changePath(path))
     }
   }
 }

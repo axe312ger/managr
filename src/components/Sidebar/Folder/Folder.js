@@ -7,7 +7,9 @@ import folderFull from './assets/folder-full.svg'
 export const Folder = (props) => {
   const icon = <img src={props.file.children ? folderFull : folderEmpty} />
   const changePath = () => {
-    props.changePath(props.file.name)
+    if (props.file.children) {
+      props.changePath(props.file.name)
+    }
   }
   return (
     <div className={classes.wrapper}>
