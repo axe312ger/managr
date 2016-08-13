@@ -1,7 +1,8 @@
 // Constants
 export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
-export const CHANGE_PATH = 'server/changePath'
+export const CHANGE_PATH = 'managr/changePath'
+export const POP_DIR = 'managr/popDir'
 
 // Action Creators
 export function treeLoaded (files) {
@@ -21,6 +22,12 @@ export function changePath (path) {
   return {
     type: CHANGE_PATH,
     path
+  }
+}
+
+export function popDir () {
+  return {
+    type: POP_DIR
   }
 }
 

@@ -16,3 +16,9 @@
 .title {
   flex: 1 1 auto;
 }
+
+.wrapperClickable {
+  @extend .wrapper;
+
+  cursor: pointer;
+}
