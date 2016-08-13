@@ -1,39 +1,66 @@
-import { loadFiles } from 'api'
-
 // Constants
-
-export const FILES_LOAD = 'managr/files/load'
-export const FILES_LOADED = 'managr/files/loaded'
+export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
+export const CHANGE_PATH = 'managr/changePath'
+export const POP_DIR = 'managr/popDir'
 
 // Action Creators
-export function filesLoaded (files) {
+export function treeLoaded (tree) {
   return {
-    type: FILES_LOADED,
-    files
+    type: TREE_LOADED,
+    tree
   }
 }
 
-export function filesLoad (path = '/') {
-  return function (dispatch) {
-    return loadFiles()
-    .then(files => dispatch(filesLoaded(files)))
+export function getTree () {
+  return {
+    type: GET_TREE
+  }
+}
+
+export function changePath (path) {
+  return {
+    type: CHANGE_PATH,
+    path
+  }
+}
+
+export function popDir () {
+  return {
+    type: POP_DIR
   }
 }
 
 // Reducer
 export const defaultState = {
-  files: [],
+  tree: {},
+  path: [],
   lastUpdated: -1
 }
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case FILES_LOADED:
+    case TREE_LOADED:
       return {
         ...state,
-        files: action.files,
+        tree: action.tree,
         lastUpdated: Date.now()
+      }
+    case CHANGE_PATH:
+      let { path } = action
+
+      if (typeof path === 'string') {
+        path = path.split('/')
+      }
+
+      return {
+        ...state,
+        path
+      }
+    case POP_DIR:
+      return {
+        ...state,
+        path: state.path.slice(0, state.path.length - 1)
       }
     default:
       return state

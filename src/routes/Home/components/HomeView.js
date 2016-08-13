@@ -8,13 +8,7 @@ export const HomeView = React.createClass({
       <h4>Welcome!</h4>
       <FilesTable />
     </div>
-  ),
-  componentWillMount: function () {
-    this.props.loadFiles()
-  },
-  propTypes: {
-    loadFiles: React.PropTypes.func.isRequired
-  }
+  )
 })
 
 export default HomeView

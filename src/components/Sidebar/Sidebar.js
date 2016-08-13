@@ -4,19 +4,36 @@ import classes from './Sidebar.scss'
 import Folder from './Folder'
 
 export const Sidebar = (props) => {
-  const folders = props.files.map((file) => (
-    <Folder key={file.filename} file={file} />
+  if (!props.node.children) {
+    return <p>nope</p>
+  }
+
+  let backButton = null
+  // @todo: remove true when after merge
+  if (props.path.length > 1) {
+    const fakeFile = {
+      name: '..',
+      children: []
+    }
+    backButton = <Folder key={fakeFile.name} file={fakeFile} changePath={props.popDir} />
+  }
+
+  const folders = props.node.children.map((file) => (
+    <Folder key={file.name} file={file} changePath={props.changePath} />
   ))
 
   return (
     <div className={classes.wrapper}>
+      {backButton}
       {folders}
     </div>
   )
 }
 
 Sidebar.propTypes = {
-  files: React.PropTypes.array.isRequired
+  node: React.PropTypes.object.isRequired,
+  changePath: React.PropTypes.func.isRequired,
+  popDir: React.PropTypes.func.isRequired
 }
 
 export default Sidebar
