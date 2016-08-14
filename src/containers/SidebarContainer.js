@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { changePath, pushDir, popDir } from 'redux/modules/Files'
 
 import Sidebar from 'components/Sidebar'
-import { folder, path } from 'redux/selectors/tree'
+import { folders, path } from 'redux/selectors/tree'
 
 const mapStateToProps = (state) => {
-  const node = folder(state) || {}
+  const node = folders(state) || {}
 
   return {
     node,
