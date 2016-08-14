@@ -3,14 +3,15 @@ import classes from './Folder.scss'
 
 import Icon from 'components/Icon'
 import NodeTitle from 'components/NodeTitle'
+import { isFolder } from 'services/datastructure'
 
 export const Folder = (props) => {
   const changePath = () => {
-    if ('children' in props.file) {
+    if (isFolder(props.file)) {
       props.changePath(props.file.name)
     }
   }
-  const wrapperClass = 'children' in props.file ? classes.wrapperClickable : classes.wrapper
+  const wrapperClass = isFolder(props.file) ? classes.wrapperClickable : classes.wrapper
 
   return (
     <div className={wrapperClass} onClick={changePath}>

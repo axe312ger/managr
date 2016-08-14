@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect'
 
+import { isFolder } from 'services/datastructure'
+
 export const tree = (state) => state.files.tree
 export const path = (state) => state.files.path
 
@@ -22,7 +24,7 @@ export const folders = createSelector(currentFolder, (tree) => {
   if (!(tree && tree.children)) {
     return {}
   }
-  const children = tree.children.filter((node) => 'children' in node)
+  const children = tree.children.filter((node) => isFolder(node))
 
   return {
     ...tree,
@@ -34,7 +36,7 @@ export const files = createSelector(currentFolder, (tree) => {
   if (!(tree && tree.children)) {
     return {}
   }
-  const children = tree.children.filter((node) => !('children' in node))
+  const children = tree.children.filter((node) => !isFolder(node))
 
   return {
     ...tree,
