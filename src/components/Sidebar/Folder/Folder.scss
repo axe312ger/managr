@@ -8,8 +8,11 @@
 
 .icon {
   flex: 0;
-  width: 45px;
   margin-right: 1rem;
+
+  > div {
+    width: 30px;
+  }
 }
 
 .title {
