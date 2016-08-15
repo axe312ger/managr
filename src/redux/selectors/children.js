@@ -49,3 +49,12 @@ export const filterFiles = (node) => {
     children
   }
 }
+
+export const filterHidden = (node) => {
+  const children = node.children.filter((node) => !node.stats.hidden)
+
+  return {
+    ...node,
+    children
+  }
+}

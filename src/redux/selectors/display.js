@@ -2,18 +2,36 @@ import { createSelector } from 'reselect'
 
 import { getCurrentNode } from './tree'
 
-import { sortChildrenByType, sortChildrenByName, filterFolders, filterFiles } from './children'
+import { sortChildrenByType, sortChildrenByName, filterFolders, filterFiles, filterHidden } from './children'
+import { hiddenFilesShown } from './settings'
 
 export const sidebarFilesShown = (state) => state.display.sidebar.showFiles
 export const tableFoldersShown = (state) => state.display.table.showFolders
 
+export const prepareNodeForDisplay = createSelector(
+  [getCurrentNode, hiddenFilesShown],
+  (currentNode, showHiddenFiles) => {
+    let node = currentNode
+
+    if (!currentNode) {
+      return false
+    }
+
+    if (!showHiddenFiles) {
+      node = filterHidden(node)
+    }
+
+    return node
+  }
+)
+
 export const sidebarNode = createSelector(
-    [getCurrentNode, sidebarFilesShown],
+    [prepareNodeForDisplay, sidebarFilesShown],
     (currentNode, showFiles) => {
       let node = currentNode
 
       if (!currentNode) {
-        return {}
+        return false
       }
 
       if (!showFiles) {
@@ -25,12 +43,12 @@ export const sidebarNode = createSelector(
 )
 
 export const tableNode = createSelector(
-    [getCurrentNode, tableFoldersShown],
+    [prepareNodeForDisplay, tableFoldersShown],
     (currentNode, showFolders) => {
       let node = currentNode
 
       if (!currentNode) {
-        return {}
+        return false
       }
 
       if (!showFolders) {
