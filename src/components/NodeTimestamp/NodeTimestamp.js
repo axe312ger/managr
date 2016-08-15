@@ -13,7 +13,7 @@ const NodeTimestamp = React.createClass({
     )
   },
   propTypes: {
-    timestamp: React.PropTypes.date
+    timestamp: React.PropTypes.string
   }
 })
 

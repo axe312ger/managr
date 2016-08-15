@@ -52,6 +52,14 @@ const Icon = (props) => {
         .slice(0, 3)
     }
 
+    // Add unique keys to make react happy
+    childIcons = childIcons.map((icon, index) => React.cloneElement(
+      icon,
+      {
+        key: [icon.props.alt, index].join('-')
+      }
+    ))
+
     return (
       <div className={classes.wrapper} title={props.file.name}>
         <img className={classes.backside} src={folderBackside} alt={props.file.name} />

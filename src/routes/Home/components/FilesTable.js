@@ -30,7 +30,7 @@ export const FilesTable = React.createClass({
     return (
       <div>
         <h1>{this.props.node.name}</h1>
-        <h4>Path {this.props.node.path} with { this.props.node.children.length } nodes.</h4>
+        <h4>Path {this.props.node.path} with { this.props.node.children.length } visible childs.</h4>
         <table className={classes.table}>
           <thead>
             <tr>

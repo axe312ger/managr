@@ -1,4 +1,3 @@
-import path from 'path'
 import http from 'http'
 import Koa from 'koa'
 import socket from 'socket.io'
