@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { changePath, pushDir, popDir } from 'redux/modules/Files'
+import { getTree, changePath, pushDir, popDir } from 'redux/modules/Files'
 import { sidebarShowFiles, sidebarHideFiles } from 'redux/modules/Display'
 
 import Sidebar from 'components/Sidebar'
@@ -35,6 +35,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     hideFiles: () => {
       dispatch(sidebarHideFiles())
+    },
+    getTree: () => {
+      dispatch(getTree())
     }
   }
 }
