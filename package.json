@@ -67,6 +67,7 @@
       "command": "babel-node bin/server",
       "env": {
         "NODE_ENV": "production",
+        "PORT": "54201",
         "DEBUG": "app:*"
       }
     },
