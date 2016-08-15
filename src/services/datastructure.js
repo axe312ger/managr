@@ -1,3 +1,7 @@
-export const isFolder = function (node) {
-  return node.hasOwnProperty('children')
+export const isNode = function (child) {
+  return child.hasOwnProperty('children')
+}
+
+export const isLeaf = function (child) {
+  return !child.hasOwnProperty('children')
 }

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 
 import { getTree } from 'redux/modules/Files'
-import { files } from 'redux/selectors/tree'
+import { tableNode } from 'redux/selectors/display'
 
 import FilesTable from '../components/FilesTable'
 
 const mapStateToProps = (state) => {
-  const node = files(state) || {}
+  const node = tableNode(state) || {}
 
   return {
     node,

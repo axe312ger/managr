@@ -1,12 +1,15 @@
 import React from 'react'
+
+import { isNode } from 'services/datastructure'
+
 import classes from './Sidebar.scss'
 
 import Folder from './Folder'
 
 export const Sidebar = (props) => {
-  if (!props.node.children) {
-    return <p>nope</p>
-  }
+  const filesToggleTitle = props.filesShown ? 'hide files' : 'show files'
+  const filesToggleCb = props.filesShown ? props.hideFiles : props.showFiles
+  const FilesToggle = <button onClick={filesToggleCb}>{filesToggleTitle}</button>
 
   let backButton = null
   if (props.path.length) {
@@ -17,14 +20,19 @@ export const Sidebar = (props) => {
     backButton = <Folder key={fakeFile.name} file={fakeFile} changePath={props.popDir} />
   }
 
-  const folders = props.node.children.map((file) => (
+  const folders = isNode(props.node) ? props.node.children.map((file) => (
     <Folder key={file.name} file={file} changePath={props.pushDir} />
-  ))
+  )) : []
 
   return (
     <div className={classes.wrapper}>
-      {backButton}
-      {folders}
+      <main>
+        {backButton}
+        {folders}
+      </main>
+      <footer>
+        {FilesToggle}
+      </footer>
     </div>
   )
 }

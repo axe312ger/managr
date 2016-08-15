@@ -4,7 +4,7 @@ import Icon from 'components/Icon'
 import NodeTitle from 'components/NodeTitle'
 import NodeTimestamp from 'components/NodeTimestamp'
 import NodeSize from 'components/NodeSize'
-import { isFolder } from 'services/datastructure'
+import { isNode } from 'services/datastructure'
 
 import classes from './FilesTable.scss'
 
@@ -15,7 +15,7 @@ export const FilesTable = React.createClass({
     }
 
     const filesList = this.props.node.children.map((file) => {
-      const size = isFolder(file) ? null : <NodeSize size={file.stats.size} />
+      const size = isNode(file) ? null : <NodeSize size={file.stats.size} />
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>

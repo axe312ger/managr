@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isFolder } from 'services/datastructure'
+import { isLeaf, isNode } from 'services/datastructure'
 
 import classes from './Icon.scss'
 
@@ -32,7 +32,7 @@ const getTypeIcon = (type) => {
 }
 
 const Icon = (props) => {
-  if (isFolder(props.file)) {
+  if (isNode(props.file)) {
     let childIcons = props.file.children
       .filter((file) => file.stats.hasOwnProperty('mime')) // drop everyting without mime
       .map((file) => file.stats.mime)
@@ -44,7 +44,7 @@ const Icon = (props) => {
     // Since the icons are unique and there might be more that one or two files,
     // we duplicate the icon list to indicate that there is more.
     const leafCount = props.file.children
-      .filter((file) => !isFolder(file))
+      .filter((file) => isLeaf(file))
       .length
 
     if (leafCount > childIcons.length) {
