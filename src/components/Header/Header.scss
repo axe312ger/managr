@@ -12,6 +12,10 @@
 .logoWrapper {
   display: flex;
   align-items: center;
+  h1 {
+    font-family: 'Managr';
+    font-weight: 100;
+  }
 }
 
 .logo {

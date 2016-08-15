@@ -10,7 +10,7 @@ export const Header = () => (
         className={classes.logo}
         src={Logo}
       />
-      <h1>Managr</h1>
+      <h1>Managr.js</h1>
     </div>
 
     <div className={classes.menuWrapper}>

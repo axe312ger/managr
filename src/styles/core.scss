@@ -1,11 +1,33 @@
+@font-face {
+    font-family: 'Managr';
+    src: url('../static/fonts/yantramanav-thin-webfont.woff2') format('woff2'),
+         url('../static/fonts/yantramanav-thin-webfont.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Managr';
+  src: url('../static/fonts/yantramanav-light-webfont.woff2') format('woff2'),
+       url('../static/fonts/yantramanav-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Managr';
+  src: url('../static/fonts/yantramanav-regular-webfont.woff2') format('woff2'),
+       url('../static/fonts/yantramanav-regular-webfont.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
 :global {
   @import 'base';
   @import '~normalize.css/normalize';
 
-  // Some best-practice CSS that's useful for most apps
-  // Just remove them if they're not what you want
   html {
     box-sizing: border-box;
+    font-family: 'Managr';
   }
 
   html,
