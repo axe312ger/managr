@@ -239,14 +239,43 @@ webpackConfig.postcss = [
 // File loaders
 /* eslint-disable */
 webpackConfig.module.loaders.push(
-  { test: /\.woff(\?.*)?$/,  loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },
-  { test: /\.woff2(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
-  { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
-  { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
-  { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  { test: /\.woff(\?.*)?$/,  loader: 'file' },
+  { test: /\.woff2(\?.*)?$/, loader: 'file' },
+  { test: /\.svg(\?.*)?$/,   loaders: [
+    'file?name=[path][name].[ext]?[hash]',
+    'svgo?useConfig=svgoConfig',
+  ]},
+  { test: /\.(png|jpg)$/,    loader: 'file' }
 )
+
+webpackConfig.svgoConfig = {
+    floatPrecision: 0, // As we only have flat icons, zero is totally fine here
+    plugins: [
+      // Optimize and minimize SVG shape
+      { collapseGroups: true },
+      { convertShapeToPath: true },
+      { mergePaths: true },
+      { transformsWithOnePath: true },
+      { convertPathData: true },
+      { convertTransform: true },
+      { convertStyleToAttrs: true },
+      // Remove noise from designer tools and clean up
+      { cleanupAttrs: true },
+      { removeDoctype: true },
+      { removeXMLProcInst: true },
+      { removeComments: true },
+      { removeMetadata: true },
+      { removeTitle: true },
+      { removeDesc: true },
+      { removeUselessStrokeAndFill: true },
+      { removeUnusedNS: true },
+      { removeRasterImages: true },
+      { removeUnknownsAndDefaults: true },
+      { removeNonInheritableGroupAttrs: true },
+      { cleanupListOfValues: true },
+      { cleanupNumericValues: true }
+    ]
+  }
 /* eslint-enable */
 
 // ------------------------------------
