@@ -1,11 +1,20 @@
 import co from 'co'
 import fs from 'co-fs-extra'
 import mime from 'mime-types'
-import { join, basename } from 'path'
+import { isHidden } from 'hidefile'
+import { join, basename, resolve } from 'path'
 
-const ROOT_PATH = 'content'
+const ROOT_PATH = resolve('.')
+const BLACKLIST = [
+  // Project related
+  '.git', 'node_modules',
+  // OSX
+  '.DS_Store', '.AppleDouble', '.LSOverride',
+  // Windows
+  'Thumbs.db', 'ehthumbs.db'
+]
 
-module.exports = co.wrap(function * (path = ROOT_PATH) {
+export default co.wrap(function * (path = ROOT_PATH) {
   return yield createItem(path)
 })
 
@@ -22,24 +31,41 @@ function * createItem (path) {
   const stats = yield fs.stat(path)
   const name = basename(path)
 
-  if (!stats.isDirectory()) {
-    return {
-      name,
-      path,
-      stats: { ...filterStats(stats), mime: mime.lookup(path) }
+  if (BLACKLIST.indexOf(name) !== -1) {
+    return false
+  }
+
+  const hidden = yield new Promise((resolve, reject) => isHidden(path, (err, res) => {
+    if (err) {
+      reject()
+    }
+    resolve(res)
+  }))
+  const leaf = {
+    name,
+    path,
+    stats: {
+      ...filterStats(stats),
+      mime: mime.lookup(path),
+      hidden
     }
   }
 
+  if (!stats.isDirectory()) {
+    return leaf
+  }
+
   const list = yield fs.readdir(path)
-  const children = yield list.map((dirItem) => {
-    const fullPath = join(path, dirItem)
-    return createItem(fullPath)
-  })
+  const dirtyChildren = yield list
+    .map((dirItem) => {
+      const fullPath = join(path, dirItem)
+      return createItem(fullPath)
+    })
+
+  const children = dirtyChildren.filter((file) => file) // Drop rejected children
 
   return {
-    name,
-    path,
-    stats: filterStats(stats),
+    ...leaf,
     children
   }
 }

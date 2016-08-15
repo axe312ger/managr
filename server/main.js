@@ -1,3 +1,4 @@
+import path from 'path'
 import http from 'http'
 import Koa from 'koa'
 import socket from 'socket.io'
@@ -29,7 +30,7 @@ io.on('connection', (socket) => {
   socket.on('action', (action) => {
     console.log(action)
     if (action.type === GET_TREE) {
-      return tree('src')
+      return tree()
         .then((fileTree) => {
           socket.emit('action', treeLoaded(fileTree))
         })
