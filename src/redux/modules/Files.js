@@ -1,3 +1,5 @@
+import { saveConfig } from './Storage'
+
 // Constants
 export const TREE_LOADED = 'managr/treeLoaded'
 export const GET_TREE = 'server/getTree'
@@ -20,22 +22,31 @@ export function getTree () {
 }
 
 export function changePath (path) {
-  return {
-    type: CHANGE_PATH,
-    path
+  return dispatch => {
+    dispatch({
+      type: CHANGE_PATH,
+      path
+    })
+    dispatch(saveConfig())
   }
 }
 
 export function pushDir (dir) {
-  return {
-    type: PUSH_DIR,
-    dir
+  return dispatch => {
+    dispatch({
+      type: PUSH_DIR,
+      dir
+    })
+    dispatch(saveConfig())
   }
 }
 
 export function popDir () {
-  return {
-    type: POP_DIR
+  return dispatch => {
+    dispatch({
+      type: POP_DIR
+    })
+    dispatch(saveConfig())
   }
 }
 

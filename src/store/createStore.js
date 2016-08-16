@@ -6,6 +6,27 @@ import makeRootReducer from './reducers'
 import createSocketIoMiddleware from 'redux-socket.io'
 import io from 'socket.io-client'
 
+import * as storage from 'redux-storage'
+import createEngine from 'redux-storage-engine-localstorage'
+import filter from 'redux-storage-decorator-filter'
+import debounce from 'redux-storage-decorator-debounce'
+
+import { SAVE_CONFIG } from 'redux/modules/Storage'
+
+const ActionBlackList = []
+const ActionWhiteList = [SAVE_CONFIG]
+
+const storeBlacklist = ['*']
+const storeWhitelist = [
+  'settings',
+  ['files', ['path']]
+]
+
+const storageEngine = debounce(filter(createEngine('managr'), storeWhitelist, storeBlacklist), 1500)
+const storageMiddleware = storage.createMiddleware(storageEngine, ActionBlackList, ActionWhiteList)
+const storageLoad = storage.createLoader(storageEngine)
+const storageReducer = storage.reducer(makeRootReducer())
+
 const socket = io('http://localhost:' + (process.env.PORT || 3000))
 const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/')
 
@@ -13,7 +34,7 @@ export default (initialState = {}, history) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
-  const middleware = [thunk, socketIoMiddleware, routerMiddleware(history)]
+  const middleware = [thunk, socketIoMiddleware, routerMiddleware(history), storageMiddleware]
 
   // ======================================================
   // Store Enhancers
@@ -30,7 +51,7 @@ export default (initialState = {}, history) => {
   // Store Instantiation and HMR Setup
   // ======================================================
   const store = createStore(
-    makeRootReducer(),
+    storageReducer,
     initialState,
     compose(
       applyMiddleware(...middleware),
@@ -38,6 +59,9 @@ export default (initialState = {}, history) => {
     )
   )
   store.asyncReducers = {}
+
+  storageLoad(store)
+    .catch(() => console.log('Failed to load previous state'))
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {

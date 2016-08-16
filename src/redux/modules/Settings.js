@@ -1,10 +1,26 @@
+import { saveConfig } from './Storage'
+
 // Constants
 export const SHOW_HIDDEN_FILES = 'managr/settings/showHiddenFiles'
 export const HIDE_HIDDEN_FILES = 'managr/settings/hideHiddenFiles'
 
 // Action Creators
-export function showHiddenFiles () { return { type: SHOW_HIDDEN_FILES } }
-export function hideHiddenFiles () { return { type: HIDE_HIDDEN_FILES } }
+export function showHiddenFiles () {
+  return dispatch => {
+    dispatch({
+      type: SHOW_HIDDEN_FILES
+    })
+    dispatch(saveConfig())
+  }
+}
+export function hideHiddenFiles () {
+  return dispatch => {
+    dispatch({
+      type: HIDE_HIDDEN_FILES
+    })
+    dispatch(saveConfig())
+  }
+}
 
 // Reducer
 export const defaultState = {
