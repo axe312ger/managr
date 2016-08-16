@@ -10,7 +10,7 @@ const Settings = React.createClass({
         <h1>Settings</h1>
         <input type='checkbox'
           onClick={toggleHiddenFilesShown}
-          value={this.props.hiddenFilesShown}
+          defaultChecked={this.props.hiddenFilesShown}
           id='hiddenFiles'
         />
         &nbsp;
