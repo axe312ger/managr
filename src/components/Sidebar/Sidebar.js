@@ -44,7 +44,6 @@ export const Sidebar = React.createClass({
     node: React.PropTypes.object.isRequired,
     path: React.PropTypes.array.isRequired,
     getTree: React.PropTypes.func.isRequired,
-    changePath: React.PropTypes.func.isRequired,
     pushDir: React.PropTypes.func.isRequired,
     popDir: React.PropTypes.func.isRequired,
     filesShown: React.PropTypes.bool.isRequired,

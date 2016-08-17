@@ -1,19 +1,20 @@
 import { connect } from 'react-redux'
 
-import { getTree, changePath, pushDir, popDir } from 'redux/modules/Files'
+import { getTree, pushDir, popDir } from 'redux/modules/Files'
 import { sidebarShowFiles, sidebarHideFiles } from 'redux/modules/Display'
 
 import Sidebar from 'components/Sidebar'
-import { path } from 'redux/selectors/tree'
+import { path as pathSelector } from 'redux/selectors/tree'
 import { sidebarNode, sidebarFilesShown } from 'redux/selectors/display'
 
 const mapStateToProps = (state) => {
   const node = sidebarNode(state) || {}
   const filesShown = sidebarFilesShown(state) || false
+  const path = pathSelector(state)
 
   return {
     node,
-    path: path(state),
+    path,
     lastUpdated: node.lastUpdated || 0,
     filesShown
   }
@@ -21,9 +22,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changePath: (path) => {
-      dispatch(changePath(path))
-    },
     pushDir: (dir) => {
       dispatch(pushDir(dir))
     },

@@ -48,13 +48,9 @@ export const FilesTable = React.createClass({
       </div>
     )
   },
-  componentWillMount: function () {
-    this.props.getTree()
-  },
   propTypes: {
     node: React.PropTypes.object.isRequired,
-    lastUpdated: React.PropTypes.number.isRequired,
-    getTree: React.PropTypes.func.isRequired
+    lastUpdated: React.PropTypes.number.isRequired
   }
 })
 

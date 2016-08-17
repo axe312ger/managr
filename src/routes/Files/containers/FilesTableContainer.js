@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 
-import { getTree } from 'redux/modules/Files'
 import { tableNode } from 'redux/selectors/display'
 
 import FilesTable from '../components/FilesTable'
@@ -15,11 +14,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    getTree: () => {
-      dispatch(getTree())
-    }
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilesTable)

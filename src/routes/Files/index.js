@@ -1,5 +1,5 @@
 export default (store) => ({
-  path: 'files',
+  path: 'files*',
   getComponent (nextState, cb) {
     require.ensure([], (require) => {
       const FilesView = require('./containers/FilesViewContainer').default

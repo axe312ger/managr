@@ -1,9 +1,9 @@
 import React from 'react'
-import { IndexLink, Link } from 'react-router'
+import { Link } from 'react-router'
 import classes from './Header.scss'
 import Logo from './assets/logo.svg'
 
-export const Header = () => (
+export const Header = (props) => (
   <div className={classes.wrapper}>
     <div className={classes.logoWrapper}>
       <img
@@ -14,9 +14,9 @@ export const Header = () => (
     </div>
 
     <div className={classes.menuWrapper}>
-      <IndexLink to='/' activeClassName={classes.activeRoute}>
-        Home
-      </IndexLink>
+      <Link to={props.currentPath} activeClassName={classes.activeRoute}>
+        Files
+      </Link>
       {' · '}
       <Link to='/settings' activeClassName={classes.activeRoute}>
         Settings
@@ -24,5 +24,9 @@ export const Header = () => (
     </div>
   </div>
 )
+
+Header.propTypes = {
+  currentPath: React.PropTypes.string.isRequired
+}
 
 export default Header
