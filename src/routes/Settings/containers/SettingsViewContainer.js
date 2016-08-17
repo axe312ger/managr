@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { showHiddenFiles, hideHiddenFiles } from 'redux/modules/Settings'
 import { hiddenFilesShown } from 'redux/selectors/settings'
 
-import Settings from '../components/Settings'
+import SettingsView from '../components/SettingsView'
 
 const mapDispatchToProps = (dispatch) => ({
   showHiddenFiles: () => {
@@ -18,4 +18,4 @@ const mapStateToProps = (state) => ({
   hiddenFilesShown: hiddenFilesShown(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView)

@@ -2,7 +2,7 @@ import React from 'react'
 
 import FilesTable from '../containers/FilesTableContainer'
 
-export const HomeView = React.createClass({
+export const FilesView = React.createClass({
   render: () => (
     <div>
       <FilesTable />
@@ -10,4 +10,4 @@ export const HomeView = React.createClass({
   )
 })
 
-export default HomeView
+export default FilesView

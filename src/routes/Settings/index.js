@@ -2,9 +2,9 @@ export default (store) => ({
   path: 'settings',
   getComponent (nextState, cb) {
     require.ensure([], (require) => {
-      const Settings = require('./containers/SettingsContainer').default
+      const SettingsView = require('./containers/SettingsViewContainer').default
 
-      cb(null, Settings)
-    }, 'settings')
+      cb(null, SettingsView)
+    }, 'settingsView')
   }
 })

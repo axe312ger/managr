@@ -1,12 +1,13 @@
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
-import Home from './Home'
+import FilesRoute from './Files'
 import SettingsRoute from './Settings'
 
 export const createRoutes = (store) => ({
   path: '/',
   component: CoreLayout,
-  indexRoute: Home,
+  indexRoute: { onEnter: (nextState, replace) => replace('/files') },
   childRoutes: [
+    FilesRoute(store),
     SettingsRoute(store)
   ]
 })

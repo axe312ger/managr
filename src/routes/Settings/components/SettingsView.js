@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Settings = React.createClass({
+const SettingsView = React.createClass({
   render () {
     const toggleHiddenFilesShown = this.props.hiddenFilesShown
       ? this.props.hideHiddenFiles : this.props.showHiddenFiles
@@ -25,4 +25,4 @@ const Settings = React.createClass({
   }
 })
 
-export default Settings
+export default SettingsView
