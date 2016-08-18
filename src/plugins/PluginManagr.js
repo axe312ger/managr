@@ -30,6 +30,15 @@ const PluginManagr = function (plugins = []) {
 
     return action
   }
+
+  // Register plugins
+  this.plugins = plugins.reduce((plugins, plugin) => {
+    return {
+      ...plugins,
+      [plugin.id]: plugin
+    }
+  }, {})
+
   // Register file based actions
   this.fileActions = plugins.reduce((actions, plugin) => {
     if (plugin.hasOwnProperty('fileActions')) {
@@ -38,6 +47,12 @@ const PluginManagr = function (plugins = []) {
     return actions
   }, [])
   .map((action) => prepareFileAction(action))
+  .reduce((actions, action) => {
+    return {
+      ...actions,
+      [action.id]: action
+    }
+  }, {})
 
   return this
 }
@@ -55,12 +70,13 @@ PluginManagr.prototype.injectState = function (state) {
 
 // Export actions for Frontend
 PluginManagr.prototype.exportFileActions = function () {
-  return this.fileActions.map((action) => {
+  return Object.keys(this.fileActions).map((actionId) => {
+    const action = this.fileActions[actionId]
     return {
       title: action.title,
       id: action.id,
-      selector: action.selector.toString(),
-      target: action.target.toString()
+      selector: action.selector.toString().slice(1, -1),
+      target: action.target.toString().slice(1, -1)
     }
   })
 }

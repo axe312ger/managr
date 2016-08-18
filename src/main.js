@@ -46,11 +46,27 @@ let render = () => {
   const routes = require('./routes/index').default(store)
 
   ReactDOM.render(
-    <AppContainer
-      store={store}
-      history={history}
-      routes={routes}
-    />,
+    React.createElement(
+      React.createClass({
+        render () {
+          return (
+            <AppContainer
+              store={store}
+              history={history}
+              routes={routes}
+            />
+          )
+        },
+        getChildContext () {
+          return {
+            fileActions: managr.fileActions
+          }
+        },
+        childContextTypes: {
+          fileActions: React.PropTypes.object
+        }
+      })
+    ),
     MOUNT_NODE
   )
 }

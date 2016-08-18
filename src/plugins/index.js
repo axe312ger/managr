@@ -8,6 +8,4 @@ const managr = new PluginManagr([
   MarkdownPlugin
 ])
 
-console.dir(managr.exportFileActions())
-
 export default managr

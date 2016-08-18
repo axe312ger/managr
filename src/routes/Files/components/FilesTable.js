@@ -1,4 +1,5 @@
 import React from 'react'
+import Async from 'babel!react-promise'
 
 import Icon from 'components/Icon'
 import NodeTitle from 'components/NodeTitle'
@@ -8,19 +9,23 @@ import { isNode } from 'services/datastructure'
 
 import classes from './FilesTable.scss'
 
-const getActionsForFile = (fileActions = [], file) => {
-  const name = file.name
-  const mime = file.stats.mime
-
-  return fileActions
-    .filter((action) => {
-      const target = new RegExp(action.target.slice(1, -1))
-      const selector = new RegExp(action.selector.slice(1, -1))
-      return target.test(name) && (mime ? selector.test(mime) : true)
-    })
-}
-
 export const FilesTable = React.createClass({
+  getActionComponents (file) {
+    const name = file.name
+    const mime = file.stats.mime
+
+    return this.props.fileActions
+      .filter((action) => {
+        const target = new RegExp(action.target)
+        const selector = new RegExp(action.selector)
+        return target.test(name) && (mime ? selector.test(mime) : true)
+      })
+      .map((action) => {
+        const promise = this.context.fileActions[action.id].getComponent()
+        const render = (component) => component
+        return <Async key={action.id} promise={promise} then={render} />
+      })
+  },
   render () {
     if (!this.props.node.children) {
       return <div>Sorry, no files loaded yet</div>
@@ -28,8 +33,7 @@ export const FilesTable = React.createClass({
 
     const filesList = this.props.node.children.map((file) => {
       const size = isNode(file) ? null : <NodeSize size={file.stats.size} />
-      const actions = getActionsForFile(this.props.fileActions, file)
-        .map((action) => <span key={action.id}> {action.title}</span>)
+      const actions = this.getActionComponents(file)
 
       return (
         <tr key={file.name}>
@@ -69,6 +73,9 @@ export const FilesTable = React.createClass({
     node: React.PropTypes.object.isRequired,
     lastUpdated: React.PropTypes.number.isRequired,
     fileActions: React.PropTypes.array.isRequired
+  },
+  contextTypes: {
+    fileActions: React.PropTypes.object.isRequired
   }
 })
 
