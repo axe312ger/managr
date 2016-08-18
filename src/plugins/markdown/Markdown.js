@@ -2,10 +2,7 @@ const Markdown = function () {
   this.fileActions = [{
     id: 'markdown',
     title: 'Markdown',
-    target: /\.md$/,
-    reaction: (req, res, next) => {
-      next()
-    }
+    target: /\.md$/
   }]
 
   return this

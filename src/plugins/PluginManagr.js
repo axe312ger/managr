@@ -17,10 +17,7 @@ const PluginManagr = function (plugins = []) {
       selector: '*'
     }, action)
 
-    // Throw error on missing properties
-    if (typeof action.reaction !== 'function') {
-      throw new Error('action reaction must be a function')
-    }
+    // Throw error for missing required properties
     if (typeof action.title !== 'string') {
       throw new Error('action must have a title')
     }

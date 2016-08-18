@@ -3,10 +3,7 @@
 const Delete = function del () {
   this.fileActions = [{
     id: 'delete',
-    title: 'Delete',
-    reaction: (req, res, next) => {
-      next()
-    }
+    title: 'Delete'
   }]
 
   return this
