@@ -12,18 +12,11 @@ export const FilesView = React.createClass({
   },
   componentWillUpdate (nextProps) {
     const currentParamPath = '/files' + this.props.routeParams.splat
-    const nextParamPath = '/files' + nextProps.routeParams.splat
     const nextCurrentPath = nextProps.currentPath
 
     // Push new path to browser history if current path changed
     if (nextCurrentPath !== currentParamPath) {
       this.props.push(nextProps.currentPath)
-    }
-
-    // Change current path if url changed
-    if (currentParamPath !== nextParamPath) {
-      const path = splatToPath(nextProps.routeParams.splat)
-      this.props.changePath(path)
     }
   },
   render: () => {
