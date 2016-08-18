@@ -1,9 +1,11 @@
 import PluginManagr from './PluginManagr'
 
 import DeletePlugin from './delete'
+import MarkdownPlugin from './markdown'
 
 const managr = new PluginManagr([
-  DeletePlugin
+  DeletePlugin,
+  MarkdownPlugin
 ])
 
 console.dir(managr.exportFileActions())

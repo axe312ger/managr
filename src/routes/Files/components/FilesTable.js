@@ -8,6 +8,18 @@ import { isNode } from 'services/datastructure'
 
 import classes from './FilesTable.scss'
 
+const getActionsForFile = (fileActions = [], file) => {
+  const name = file.name
+  const mime = file.stats.mime
+
+  return fileActions
+    .filter((action) => {
+      const target = new RegExp(action.target.slice(1, -1))
+      const selector = new RegExp(action.selector.slice(1, -1))
+      return target.test(name) && (mime ? selector.test(mime) : true)
+    })
+}
+
 export const FilesTable = React.createClass({
   render () {
     if (!this.props.node.children) {
@@ -16,6 +28,9 @@ export const FilesTable = React.createClass({
 
     const filesList = this.props.node.children.map((file) => {
       const size = isNode(file) ? null : <NodeSize size={file.stats.size} />
+      const actions = getActionsForFile(this.props.fileActions, file)
+        .map((action) => <span key={action.id}> {action.title}</span>)
+
       return (
         <tr key={file.name}>
           <td><Icon file={file} /></td>
@@ -23,6 +38,7 @@ export const FilesTable = React.createClass({
           <td>{size}</td>
           <td><NodeTimestamp timestamp={file.stats.created} /></td>
           <td><NodeTimestamp timestamp={file.stats.modified} /></td>
+          <td>{actions}</td>
         </tr>
       )
     })
@@ -39,6 +55,7 @@ export const FilesTable = React.createClass({
               <th>Size</th>
               <th>Created</th>
               <th>Modified</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -50,7 +67,8 @@ export const FilesTable = React.createClass({
   },
   propTypes: {
     node: React.PropTypes.object.isRequired,
-    lastUpdated: React.PropTypes.number.isRequired
+    lastUpdated: React.PropTypes.number.isRequired,
+    fileActions: React.PropTypes.array.isRequired
   }
 })
 
