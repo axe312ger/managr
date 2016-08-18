@@ -14,6 +14,7 @@
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
     "start:prod": "better-npm-run start:prod",
+    "rerun:prod": "better-npm-run deploy:prod && better-npm-run start:prod",
     "dev": "better-npm-run dev",
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
@@ -54,6 +55,7 @@
       "command": "npm run deploy",
       "env": {
         "NODE_ENV": "production",
+        "PORT": "64539",
         "DEBUG": "app:*"
       }
     },
@@ -67,7 +69,7 @@
       "command": "babel-node bin/server",
       "env": {
         "NODE_ENV": "production",
-        "PORT": "54201",
+        "PORT": "64539",
         "DEBUG": "app:*"
       }
     },
