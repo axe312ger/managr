@@ -3,6 +3,7 @@ import Koa from 'koa'
 import socket from 'socket.io'
 import fs from 'fs'
 import path from 'path'
+import rimraf from 'rimraf'
 import convert from 'koa-convert'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
@@ -62,6 +63,30 @@ io.on('connection', (socket) => {
             socket.emit('action', treeLoaded(fileTree))
           })
       })
+    })
+  })
+
+  socket.on('file/delete', (data) => {
+    const publicFilePath = path.join(data.path.join('/'), data.name)
+    const filePath = path.join(config.dir_content, publicFilePath)
+
+    rimraf(filePath, { glob: false }, (err) => {
+      if (err) {
+        socket.emit('action', {
+          type: 'file/errored',
+          msg: 'Unable to delete file',
+          file: publicFilePath
+        })
+        return
+      }
+      socket.emit('action', {
+        type: 'file/deleted',
+        file: publicFilePath
+      })
+      tree()
+        .then((fileTree) => {
+          socket.emit('action', treeLoaded(fileTree))
+        })
     })
   })
 
