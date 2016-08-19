@@ -1,0 +1,53 @@
+@import '../../../styles/config';
+
+.dropzone {
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 999;
+  }
+}
+
+.hint {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.2em 0.7em;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: $lightGrey;
+  font-size: 0.9rem;
+}
+
+.dropzoneActive {
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 999;
+    top: -1rem;
+    bottom: -1rem;
+    bottom: -1rem;
+    left: -1rem;
+    right: -1rem;
+    background: rgba($lightGrey, .92);
+    border: 4px dashed rgba($mediumGrey, .5);
+  }
+  &:after {
+    content: 'Drop files to upload...';
+    display: block;
+    position: absolute;
+    z-index: 999;
+    top: 20vh;
+    left: -1rem;
+    right: -1rem;
+    font-size: 3rem;
+    color: $mediumGrey;
+    text-align: center;
+  }
+}

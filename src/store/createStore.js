@@ -4,7 +4,6 @@ import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
 
 import createSocketIoMiddleware from 'redux-socket.io'
-import io from 'socket.io-client'
 
 import * as storage from 'redux-storage'
 import createEngine from 'redux-storage-engine-localstorage'
@@ -27,10 +26,9 @@ const storageMiddleware = storage.createMiddleware(storageEngine, ActionBlackLis
 const storageLoad = storage.createLoader(storageEngine)
 const storageReducer = storage.reducer(makeRootReducer())
 
-const socket = io(__API__)
-const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/')
+export default (initialState = {}, history, socket) => {
+  const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/')
 
-export default (initialState = {}, history) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================

@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import { useRouterHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import io from 'socket.io-client'
+
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 
@@ -20,8 +22,9 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 // react-router-redux reducer under the routerKey "router" in src/routes/index.js,
 // so we need to provide a custom `selectLocationState` to inform
 // react-router-redux of its location.
+const socket = io(__API__)
 const initialState = window.___INITIAL_STATE__
-const store = createStore(initialState, browserHistory)
+const store = createStore(initialState, browserHistory, socket)
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
 })
@@ -44,11 +47,27 @@ let render = () => {
   const routes = require('./routes/index').default(store)
 
   ReactDOM.render(
-    <AppContainer
-      store={store}
-      history={history}
-      routes={routes}
-    />,
+    React.createElement(
+      React.createClass({
+        render () {
+          return (
+            <AppContainer
+              store={store}
+              history={history}
+              routes={routes}
+            />
+          )
+        },
+        getChildContext () {
+          return {
+            socket
+          }
+        },
+        childContextTypes: {
+          socket: React.PropTypes.object
+        }
+      })
+    ),
     MOUNT_NODE
   )
 }
