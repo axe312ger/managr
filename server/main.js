@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
     const publicFilePath = path.join(data.path.join('/'), data.name)
     const filePath = path.join(config.dir_content, publicFilePath)
 
-    fs.open(filePath, 'w', (err, fd) => {
+    fs.writeFile(filePath, data.fileData, (err) => {
       if (err) {
         socket.emit('action', {
           type: 'file/errored',
@@ -53,16 +53,15 @@ io.on('connection', (socket) => {
         return
       }
 
-      fs.write(fd, data, () => {
-        socket.emit('action', {
-          type: 'file/created',
-          file: publicFilePath
-        })
-        tree()
-          .then((fileTree) => {
-            socket.emit('action', treeLoaded(fileTree))
-          })
+      socket.emit('action', {
+        type: 'file/created',
+        file: publicFilePath
       })
+
+      tree()
+        .then((fileTree) => {
+          socket.emit('action', treeLoaded(fileTree))
+        })
     })
   })
 
