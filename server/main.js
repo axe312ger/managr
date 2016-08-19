@@ -1,6 +1,8 @@
 import http from 'http'
 import Koa from 'koa'
 import socket from 'socket.io'
+import fs from 'fs'
+import path from 'path'
 import convert from 'koa-convert'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
@@ -34,6 +36,33 @@ io.on('connection', (socket) => {
           socket.emit('action', treeLoaded(fileTree))
         })
     }
+  })
+
+  socket.on('file/create', (data) => {
+    const publicFilePath = path.join(data.path.join('/'), data.name)
+    const filePath = path.join(config.dir_content, publicFilePath)
+
+    fs.open(filePath, 'w', (err, fd) => {
+      if (err) {
+        socket.emit('action', {
+          type: 'file/errored',
+          msg: 'Unable to open file for writing',
+          file: publicFilePath
+        })
+        return
+      }
+
+      fs.write(fd, data, () => {
+        socket.emit('action', {
+          type: 'file/created',
+          file: publicFilePath
+        })
+        tree()
+          .then((fileTree) => {
+            socket.emit('action', treeLoaded(fileTree))
+          })
+      })
+    })
   })
 
   socket.on('disconnect', () => {

@@ -2,11 +2,13 @@
 
 html, body {
   color: $mainColor;
+  cursor: default;
 }
 
 a {
   color: $brand;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
