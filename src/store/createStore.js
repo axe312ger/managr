@@ -27,7 +27,7 @@ const storageMiddleware = storage.createMiddleware(storageEngine, ActionBlackLis
 const storageLoad = storage.createLoader(storageEngine)
 const storageReducer = storage.reducer(makeRootReducer())
 
-const socket = io('http://localhost:' + (process.env.PORT || 3000))
+const socket = io(__API__)
 const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/')
 
 export default (initialState = {}, history) => {

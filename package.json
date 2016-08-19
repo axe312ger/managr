@@ -1,19 +1,22 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "3.0.0-alpha.2",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "Managr.js",
+  "version": "0.0.1",
+  "description": "Pluggable filemanager for JavaScript",
   "main": "index.js",
   "engines": {
     "node": ">=4.2.0",
     "npm": "^3.0.0"
   },
+  "private": true,
   "scripts": {
+    "analyze": "better-npm-run analyze",
     "clean": "rimraf dist",
     "compile": "better-npm-run compile",
     "lint": "eslint src tests server",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
     "start:prod": "better-npm-run start:prod",
+    "rerun:prod": "better-npm-run deploy:prod && better-npm-run start:prod",
     "dev": "better-npm-run dev",
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
@@ -24,6 +27,12 @@
     "codecov": "cat coverage/*/lcov.info | codecov"
   },
   "betterScripts": {
+    "analyze": {
+      "command": "npm run deploy:prod",
+      "env": {
+        "ANALYZE": "production"
+      }
+    },
     "compile": {
       "command": "babel-node bin/compile",
       "env": {
@@ -54,6 +63,7 @@
       "command": "npm run deploy",
       "env": {
         "NODE_ENV": "production",
+        "PORT": "64539",
         "DEBUG": "app:*"
       }
     },
@@ -67,7 +77,7 @@
       "command": "babel-node bin/server",
       "env": {
         "NODE_ENV": "production",
-        "PORT": "54201",
+        "PORT": "64539",
         "DEBUG": "app:*"
       }
     },
