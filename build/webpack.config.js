@@ -18,7 +18,8 @@ const webpackConfig = {
     root: paths.client(),
     extensions: ['', '.js', '.jsx', '.json']
   },
-  module: {}
+  module: {},
+  profile: process.env.hasOwnProperty('ANALYZE')
 }
 // ------------------------------------
 // Entry Points

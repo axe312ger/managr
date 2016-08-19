@@ -1,13 +1,15 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "3.0.0-alpha.2",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "Managr.js",
+  "version": "0.0.1",
+  "description": "Pluggable filemanager for JavaScript",
   "main": "index.js",
   "engines": {
     "node": ">=4.2.0",
     "npm": "^3.0.0"
   },
+  "private": true,
   "scripts": {
+    "analyze": "better-npm-run analyze",
     "clean": "rimraf dist",
     "compile": "better-npm-run compile",
     "lint": "eslint src tests server",
@@ -25,6 +27,12 @@
     "codecov": "cat coverage/*/lcov.info | codecov"
   },
   "betterScripts": {
+    "analyze": {
+      "command": "npm run deploy:prod",
+      "env": {
+        "ANALYZE": "production"
+      }
+    },
     "compile": {
       "command": "babel-node bin/compile",
       "env": {
