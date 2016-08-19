@@ -21,8 +21,11 @@ export const FilesTable = React.createClass({
         return target.test(name) && (mime ? selector.test(mime) : true)
       })
       .map((action) => {
-        const promise = this.context.fileActions[action.id].getComponent()
-        const render = (component) => component
+        const promise = this.context.fileActions[action.id].getComponent({
+          file,
+          path: this.props.path
+        })
+        const render = (actionComponent) => actionComponent
         return <Async key={action.id} promise={promise} then={render} />
       })
   },
@@ -72,7 +75,8 @@ export const FilesTable = React.createClass({
   propTypes: {
     node: React.PropTypes.object.isRequired,
     lastUpdated: React.PropTypes.number.isRequired,
-    fileActions: React.PropTypes.array.isRequired
+    fileActions: React.PropTypes.array.isRequired,
+    path: React.PropTypes.array.isRequired
   },
   contextTypes: {
     fileActions: React.PropTypes.object.isRequired

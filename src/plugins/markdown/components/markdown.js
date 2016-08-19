@@ -1,10 +1,7 @@
 import React from 'react'
 
 const markdown = (props) => (
-  <div>
-    <button>Markdown</button>
-    <span> (node has {props.node.children.length} childs)</span>
-  </div>
+  <button>Markdown</button>
 )
 
 markdown.propTypes = {
