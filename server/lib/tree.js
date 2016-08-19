@@ -3,8 +3,9 @@ import fs from 'co-fs-extra'
 import mime from 'mime-types'
 import { isHidden } from 'hidefile'
 import { join, basename, resolve } from 'path'
+import config from '../../config'
 
-const ROOT_PATH = resolve('.')
+const ROOT_PATH = resolve(config.dir_content)
 const BLACKLIST = [
   // Project related
   '.git', 'node_modules',

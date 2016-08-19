@@ -1,6 +1,8 @@
 import React from 'react'
+import Dropzone from 'react-dropzone'
 
 import FilesTable from '../containers/FilesTableContainer'
+import classes from './FilesView.scss'
 
 const splatToPath = (splat) => splat.split('/').slice(1)
 
@@ -19,10 +21,33 @@ export const FilesView = React.createClass({
       this.props.push(nextProps.currentPath)
     }
   },
-  render: () => {
+  render () {
+    const onDrop = (files) => {
+      files.map((file) => {
+        const fr = new FileReader()
+        fr.addEventListener('loadend', () => {
+          this.context.socket.emit('file/create', {
+            fileData: fr.result,
+            name: file.name,
+            path: this.props.path
+          })
+        })
+        fr.readAsArrayBuffer(file)
+      })
+    }
+    const onClick = () => {
+      this.refs.dropzone.open()
+    }
     return (
       <div>
-        <FilesTable />
+        <Dropzone className={classes.dropzone} activeClassName={classes.dropzoneActive}
+          ref='dropzone' disableClick multiple onDrop={onDrop}>
+          <div className={classes.hint}>
+            <span>Upload files by dropping them into this area or by </span>
+            <a onClick={onClick}>clicking here</a>
+          </div>
+          <FilesTable />
+        </Dropzone>
       </div>
     )
   },
@@ -30,7 +55,11 @@ export const FilesView = React.createClass({
     routeParams: React.PropTypes.object.isRequired,
     changePath: React.PropTypes.func.isRequired,
     currentPath: React.PropTypes.string.isRequired,
+    path: React.PropTypes.array.isRequired,
     push: React.PropTypes.func.isRequired
+  },
+  contextTypes: {
+    socket: React.PropTypes.object.isRequired
   }
 })
 

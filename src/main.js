@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import { useRouterHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import io from 'socket.io-client'
+
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 
@@ -22,8 +24,9 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 // react-router-redux reducer under the routerKey "router" in src/routes/index.js,
 // so we need to provide a custom `selectLocationState` to inform
 // react-router-redux of its location.
-const initialState = managr.injectState(window.___INITIAL_STATE__ || {})
-const store = createStore(initialState, browserHistory)
+const socket = io(__API__)
+const initialState = managr.injectState(window.___INITIAL_STATE__)
+const store = createStore(initialState, browserHistory, socket)
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
 })
@@ -59,11 +62,13 @@ let render = () => {
         },
         getChildContext () {
           return {
-            fileActions: managr.fileActions
+            fileActions: managr.fileActions,
+            socket
           }
         },
         childContextTypes: {
-          fileActions: React.PropTypes.object
+          fileActions: React.PropTypes.object,
+          socket: React.PropTypes.object
         }
       })
     ),
