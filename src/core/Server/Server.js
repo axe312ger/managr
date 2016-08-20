@@ -2,6 +2,7 @@ import ss from 'socket.io-stream'
 
 import Tree from './FileAPI/Tree'
 import Create from './FileAPI/Create'
+import Read from './FileAPI/Read'
 import Delete from './FileAPI/Delete'
 
 import * as fileAPIredux from '../shared/redux/fileAPI'
@@ -10,8 +11,9 @@ import { resolve } from 'path'
 
 export default function Server (config) {
   const tree = new Tree(config)
-  const del = new Delete(config)
   const create = new Create(config)
+  const read = new Read(config)
+  const del = new Delete(config)
   const io = config.io
 
   io.on('connection', (socket) => {
@@ -38,6 +40,21 @@ export default function Server (config) {
           getTree(fileAPIredux.getTree())
         })
         .pipe(createStream)
+    }
+
+    const readFile = function (stream, action) {
+      const file = action.file
+      const readStream = read(file)
+        .on('error', () => {
+          const msg = 'Unable to read file'
+          socket.emit('action', fileAPIredux.fileErrored(msg, file))
+        })
+      readStream
+        .on('end', () => {
+          socket.emit('action', fileAPIredux.fileReaded(file))
+          getTree(fileAPIredux.getTree())
+        })
+        .pipe(stream)
     }
 
     const deleteFile = function (action) {
@@ -68,6 +85,9 @@ export default function Server (config) {
       console.log(`Streamed Server action ${action.type} arrived`)
       if (action.type === fileAPIredux.FILE_CREATE) {
         createFile(stream, action)
+      }
+      if (action.type === fileAPIredux.FILE_READ) {
+        readFile(stream, action)
       }
     })
 

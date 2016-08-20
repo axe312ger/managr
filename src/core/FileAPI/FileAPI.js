@@ -1,4 +1,5 @@
 import ss from 'socket.io-stream'
+import blobStream from 'blob-stream'
 
 import * as redux from '../shared/redux/fileAPI'
 
@@ -26,6 +27,37 @@ FileAPI.prototype.create = function (file, path) {
 
   // Send file
   sender.pipe(reciever)
+}
+
+FileAPI.prototype.read = function (file) {
+  // const sender = ss.createStream()
+  const reciever = ss.createStream()
+
+  // Emit action
+  ss(this.socket).emit('action', reciever, redux.fileRead(file))
+
+  // Monitor read progress
+  // Currently does not work since size is not know
+  let size = 0
+  reciever.on('data', function (chunk) {
+    size += chunk.length
+    console.log(Math.floor(size / file.stats.size * 100) + '%')
+  })
+  .pipe(blobStream())
+  .on('finish', function () {
+    var blob = this.toBlob()
+
+    var reader = new FileReader()
+    reader.addEventListener('loadend', function () {
+      console.log(this.result)
+      const link = document.createElement('a')
+      link.download = file.name
+      link.href = this.result // 'data:,' + fileContents;
+      link.click()
+    })
+    // reader.readAsText(blob)
+    reader.readAsDataURL(blob)
+  })
 }
 
 FileAPI.prototype.delete = function (file) {
