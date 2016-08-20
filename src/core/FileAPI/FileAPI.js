@@ -8,14 +8,24 @@ export default function FileAPI (config) {
 }
 
 FileAPI.prototype.create = function (file, path) {
-  const stream = ss.createStream()
+  const reciever = ss.createStream()
+  const sender = ss.createBlobReadStream(file)
 
-  ss(this.socket).emit('action', stream, redux.fileCreate({
+  // Emit action
+  ss(this.socket).emit('action', reciever, redux.fileCreate({
     name: file.name,
     path
   }))
 
-  ss.createBlobReadStream(file).pipe(stream)
+  // Monitor upload progress
+  let size = 0
+  sender.on('data', function (chunk) {
+    size += chunk.length
+    console.log(Math.floor(size / file.size * 100) + '%')
+  })
+
+  // Send file
+  sender.pipe(reciever)
 }
 
 FileAPI.prototype.delete = function (file) {
