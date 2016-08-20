@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Delete () {}
+export default function Delete () {}
 
 Delete.prototype.fileActions = [{
   id: 'delete',
@@ -14,5 +14,3 @@ Delete.prototype.fileActions = [{
     })
   }
 }]
-
-export default Delete

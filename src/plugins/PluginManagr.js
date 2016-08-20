@@ -30,7 +30,7 @@ const prepareFileAction = (action) => {
   return action
 }
 
-const PluginManagr = function (plugins = []) {
+export default function PluginManagr (plugins = []) {
   // Register plugins
   this.plugins = plugins.reduce((plugins, plugin) => {
     return {
@@ -80,5 +80,3 @@ PluginManagr.prototype.exportFileActions = function () {
     }
   })
 }
-
-export default PluginManagr

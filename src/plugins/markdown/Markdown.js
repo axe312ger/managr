@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Markdown () {}
+export default function Markdown () {}
 
 Markdown.prototype.fileActions = [{
   id: 'markdown',
@@ -15,5 +15,3 @@ Markdown.prototype.fileActions = [{
     })
   }
 }]
-
-export default Markdown
