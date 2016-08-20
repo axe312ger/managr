@@ -1,6 +1,3 @@
-import React from 'react'
-import Async from 'babel!react-promise'
-
 // Human friendly selectors to support *, string matching and regex
 const prepareSelector = (selector) => {
   // transform asterisk to match all regex
@@ -37,7 +34,10 @@ const prepareFileAction = (action) => {
   return action
 }
 
-export default function PluginManagr (plugins = []) {
+import React from 'react'
+import Async from 'babel!react-promise'
+
+export default function PluginAPI (plugins = []) {
   // Register plugins
   this.plugins = plugins.reduce((plugins, plugin) => {
     return {
@@ -64,7 +64,7 @@ export default function PluginManagr (plugins = []) {
   return this
 }
 
-PluginManagr.prototype.getMatchingFileActions = function (file) {
+PluginAPI.prototype.getMatchingFileActions = function (file) {
   const name = file.name
   const mime = file.stats.mime
 
@@ -79,7 +79,7 @@ PluginManagr.prototype.getMatchingFileActions = function (file) {
     })
 }
 
-PluginManagr.prototype.renderFileActions = function (file) {
+PluginAPI.prototype.renderFileActions = function (file) {
   return this.getMatchingFileActions(file)
     .map((fileAction) => {
       if ('getComponent' in fileAction) {

@@ -19,7 +19,7 @@ export const FilesTable = React.createClass({
     const filesList = this.props.node.children.map((file) => {
       const size = (isNode(file) ? null : <NodeSize size={file.stats.size} />)
 
-      const actions = managr.renderFileActions(file)
+      const actions = managr.pluginAPI.renderFileActions(file)
 
       return (
         <tr key={file.name}>
