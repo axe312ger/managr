@@ -24,15 +24,8 @@ export const FilesView = React.createClass({
   render () {
     const onDrop = (files) => {
       files.map((file) => {
-        const fr = new FileReader()
-        fr.addEventListener('loadend', () => {
-          this.context.managr.fileAPI.create({
-            name: file.name,
-            path: [...this.props.path, file.name].join('/'),
-            data: fr.result
-          })
-        })
-        fr.readAsArrayBuffer(file)
+        const path = [...this.props.path, file.name].join('/')
+        this.context.managr.fileAPI.create(file, path)
       })
     }
     const onClick = () => {

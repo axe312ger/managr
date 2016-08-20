@@ -1,3 +1,5 @@
+import ss from 'socket.io-stream'
+
 import Tree from './FileAPI/Tree'
 import Create from './FileAPI/Create'
 import Delete from './FileAPI/Delete'
@@ -23,16 +25,19 @@ export default function Server (config) {
         })
     }
 
-    const createFile = function (action) {
+    const createFile = function (stream, action) {
       const file = action.file
-      try {
-        create(file)
-        socket.emit('action', fileAPIredux.fileCreated(file))
-        getTree(fileAPIredux.getTree())
-      } catch (err) {
-        console.error('failed', err)
-        socket.emit('action', fileAPIredux.fileErrored('Unable to create file', file))
-      }
+      const createStream = create(file)
+        .on('error', (err) => {
+          const msg = err.code === 'EEXIST' ? 'File already exists' : 'Unable to create file'
+          socket.emit('action', fileAPIredux.fileErrored(msg, file))
+        })
+      stream
+        .on('end', () => {
+          socket.emit('action', fileAPIredux.fileCreated(file))
+          getTree(fileAPIredux.getTree())
+        })
+        .pipe(createStream)
     }
 
     const deleteFile = function (action) {
@@ -48,18 +53,21 @@ export default function Server (config) {
     }
 
     socket.on('action', (action) => {
-      console.log('Server action `${action.type}` arrived')
+      console.log(`Server action ${action.type} arrived`)
 
       if (action.type === fileAPIredux.GET_TREE) {
         getTree(action)
       }
 
-      if (action.type === fileAPIredux.FILE_CREATE) {
-        createFile(action)
-      }
-
       if (action.type === fileAPIredux.FILE_DELETE) {
         deleteFile(action)
+      }
+    })
+
+    ss(socket).on('action', function (stream, action) {
+      console.log(`Streamed Server action ${action.type} arrived`)
+      if (action.type === fileAPIredux.FILE_CREATE) {
+        createFile(stream, action)
       }
     })
 

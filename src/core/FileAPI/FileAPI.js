@@ -1,3 +1,5 @@
+import ss from 'socket.io-stream'
+
 import * as redux from '../shared/redux/fileAPI'
 
 export default function FileAPI (config) {
@@ -5,8 +7,15 @@ export default function FileAPI (config) {
   return this
 }
 
-FileAPI.prototype.create = function (file) {
-  this.socket.emit('action', redux.fileCreate(file))
+FileAPI.prototype.create = function (file, path) {
+  const stream = ss.createStream()
+
+  ss(this.socket).emit('action', stream, redux.fileCreate({
+    name: file.name,
+    path
+  }))
+
+  ss.createBlobReadStream(file).pipe(stream)
 }
 
 FileAPI.prototype.delete = function (file) {
