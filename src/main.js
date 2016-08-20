@@ -8,7 +8,8 @@ import io from 'socket.io-client'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 
-import managr from './plugins/index'
+import ManagrConfig from '../src/core/config'
+import Managr from './core'
 
 // ========================================================
 // Browser History Setup
@@ -32,6 +33,12 @@ const history = syncHistoryWithStore(browserHistory, store, {
 })
 
 // ========================================================
+// Managr Frontend Setup
+// ========================================================
+const managrConfig = ManagrConfig(socket)
+const managr = Managr(managrConfig)
+
+// ========================================================
 // Render Setup
 // ========================================================
 const MOUNT_NODE = document.getElementById('root')
@@ -53,13 +60,11 @@ let render = () => {
         },
         getChildContext () {
           return {
-            managr,
-            socket
+            managr
           }
         },
         childContextTypes: {
-          managr: React.PropTypes.object,
-          socket: React.PropTypes.object
+          managr: React.PropTypes.object
         }
       })
     ),

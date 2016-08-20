@@ -2,10 +2,8 @@ import co from 'co'
 import fs from 'co-fs-extra'
 import mime from 'mime-types'
 import { isHidden } from 'hidefile'
-import { join, basename, resolve, relative } from 'path'
-import config from '../../config'
+import { join, basename, relative, resolve } from 'path'
 
-const ROOT_PATH = resolve(config.dir_content)
 const BLACKLIST = [
   // Project related
   '.git', 'node_modules',
@@ -14,10 +12,6 @@ const BLACKLIST = [
   // Windows
   'Thumbs.db', 'ehthumbs.db'
 ]
-
-export default co.wrap(function * (path = ROOT_PATH) {
-  return yield createItem(path)
-})
 
 function filterStats (stats) {
   const { size, birthtime, mtime } = stats
@@ -28,26 +22,30 @@ function filterStats (stats) {
   }
 }
 
-function * createItem (path) {
-  const stats = yield fs.stat(path)
+function *createItem (path, config) {
+  const fullPath = resolve(config.contentDir, path)
+  const stats = yield fs.stat(fullPath)
   const name = basename(path)
 
   if (BLACKLIST.indexOf(name) !== -1) {
     return false
   }
 
-  const hidden = yield new Promise((resolve, reject) => isHidden(path, (err, res) => {
-    if (err) {
-      reject()
-    }
-    resolve(res)
-  }))
+  const hidden = yield new Promise(
+    (resolve, reject) => isHidden(fullPath, (err, res) => {
+      if (err) {
+        reject()
+      }
+      resolve(res)
+    })
+  )
+
   const leaf = {
     name,
-    path: relative(ROOT_PATH, path),
+    path: relative(config.contentDir, path),
     stats: {
       ...filterStats(stats),
-      mime: mime.lookup(path),
+      mime: mime.lookup(fullPath),
       hidden
     }
   }
@@ -56,11 +54,12 @@ function * createItem (path) {
     return leaf
   }
 
-  const list = yield fs.readdir(path)
+  const list = yield fs.readdir(fullPath)
+
   const dirtyChildren = yield list
     .map((dirItem) => {
-      const fullPath = join(path, dirItem)
-      return createItem(fullPath)
+      const newPath = join(path, dirItem)
+      return createItem(newPath, config)
     })
 
   const children = dirtyChildren.filter((file) => file) // Drop rejected children
@@ -69,4 +68,10 @@ function * createItem (path) {
     ...leaf,
     children
   }
+}
+
+export default function Tree (config) {
+  return co.wrap(function * (path = config.contentDir) {
+    return yield createItem(path, config)
+  })
 }

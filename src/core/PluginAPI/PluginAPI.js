@@ -37,7 +37,9 @@ const prepareFileAction = (action) => {
 import React from 'react'
 import Async from 'babel!react-promise'
 
-export default function PluginAPI (plugins = []) {
+export default function PluginAPI (config) {
+  const plugins = config.plugins
+
   // Register plugins
   this.plugins = plugins.reduce((plugins, plugin) => {
     return {

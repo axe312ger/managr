@@ -26,10 +26,10 @@ export const FilesView = React.createClass({
       files.map((file) => {
         const fr = new FileReader()
         fr.addEventListener('loadend', () => {
-          this.context.socket.emit('file/create', {
-            fileData: fr.result,
+          this.context.managr.fileAPI.create({
             name: file.name,
-            path: this.props.path
+            path: [...this.props.path, file.name].join('/'),
+            data: fr.result
           })
         })
         fr.readAsArrayBuffer(file)
@@ -59,7 +59,7 @@ export const FilesView = React.createClass({
     push: React.PropTypes.func.isRequired
   },
   contextTypes: {
-    socket: React.PropTypes.object.isRequired
+    managr: React.PropTypes.object.isRequired
   }
 })
 

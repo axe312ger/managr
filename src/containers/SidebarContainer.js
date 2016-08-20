@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 
-import { getTree, pushDir, popDir } from 'redux/modules/Files'
+import { getTree } from 'core/shared/redux/fileAPI'
+import { pushDir, popDir } from 'redux/modules/Files'
 import { sidebarShowFiles, sidebarHideFiles } from 'redux/modules/Display'
 
 import Sidebar from 'components/Sidebar'
