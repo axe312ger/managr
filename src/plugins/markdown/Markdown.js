@@ -1,21 +1,19 @@
 import React from 'react'
 
-const Markdown = function () {
-  this.fileActions = [{
-    id: 'markdown',
-    title: 'Markdown',
-    target: /\.md$/,
-    getComponent: () => {
-      return new Promise((resolve, reject) => {
-        require.ensure([], () => {
-          const component = require('./containers/markdownContainer').default
-          resolve(React.createElement(component))
-        }, 'markdown')
-      })
-    }
-  }]
+function Markdown () {}
 
-  return this
-}
+Markdown.prototype.fileActions = [{
+  id: 'markdown',
+  title: 'Markdown',
+  target: /\.md$/,
+  getComponent: () => {
+    return new Promise((resolve, reject) => {
+      require.ensure([], () => {
+        const component = require('./containers/markdownContainer').default
+        resolve(React.createElement(component))
+      }, 'markdown')
+    })
+  }
+}]
 
-export default new Markdown()
+export default Markdown

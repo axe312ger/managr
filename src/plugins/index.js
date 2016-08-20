@@ -4,8 +4,8 @@ import DeletePlugin from './delete'
 import MarkdownPlugin from './markdown'
 
 const managr = new PluginManagr([
-  DeletePlugin,
-  MarkdownPlugin
+  new DeletePlugin(),
+  new MarkdownPlugin()
 ])
 
 export default managr
