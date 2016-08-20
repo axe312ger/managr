@@ -4,7 +4,6 @@ import { routerReducer as router } from 'react-router-redux'
 import files from 'redux/modules/Files'
 import display from 'redux/modules/Display'
 import settings from 'redux/modules/Settings'
-import plugins from 'redux/modules/Plugins'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
@@ -13,7 +12,6 @@ export const makeRootReducer = (asyncReducers) => {
     display,
     settings,
     router,
-    plugins,
     ...asyncReducers
   })
 }

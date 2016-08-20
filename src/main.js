@@ -25,7 +25,7 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 // so we need to provide a custom `selectLocationState` to inform
 // react-router-redux of its location.
 const socket = io(__API__)
-const initialState = managr.injectState(window.___INITIAL_STATE__)
+const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState, browserHistory, socket)
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
@@ -62,12 +62,12 @@ let render = () => {
         },
         getChildContext () {
           return {
-            fileActions: managr.fileActions,
+            managr,
             socket
           }
         },
         childContextTypes: {
-          fileActions: React.PropTypes.object,
+          managr: React.PropTypes.object,
           socket: React.PropTypes.object
         }
       })

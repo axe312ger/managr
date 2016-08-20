@@ -2,7 +2,7 @@ import co from 'co'
 import fs from 'co-fs-extra'
 import mime from 'mime-types'
 import { isHidden } from 'hidefile'
-import { join, basename, resolve } from 'path'
+import { join, basename, resolve, relative } from 'path'
 import config from '../../config'
 
 const ROOT_PATH = resolve(config.dir_content)
@@ -44,7 +44,7 @@ function * createItem (path) {
   }))
   const leaf = {
     name,
-    path,
+    path: relative(ROOT_PATH, path),
     stats: {
       ...filterStats(stats),
       mime: mime.lookup(path),

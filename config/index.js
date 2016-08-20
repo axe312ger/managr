@@ -22,7 +22,7 @@ const config = {
   dir_dist   : 'dist',
   dir_server : 'server',
   dir_test   : 'tests',
-  dir_content: 'example-content',
+  dir_content: path.resolve(__dirname, '..', 'example-content'),
 
   // ----------------------------------
   // Server Configuration

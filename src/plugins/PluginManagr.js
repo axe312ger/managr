@@ -1,3 +1,6 @@
+import React from 'react'
+import Async from 'babel!react-promise'
+
 // Human friendly selectors to support *, string matching and regex
 const prepareSelector = (selector) => {
   // transform asterisk to match all regex
@@ -18,10 +21,14 @@ const prepareFileAction = (action) => {
 
   // Throw error for missing required properties
   if (typeof action.title !== 'string') {
-    throw new Error('action must have a title')
+    throw new Error('file action must have a title')
   }
   if (typeof action.id !== 'string') {
-    throw new Error('action must have an id')
+    throw new Error('file action must have an id')
+  }
+
+  if (!('component' in action || 'getComponent' in action)) {
+    throw new Error('file action must contain a component')
   }
 
   action.selector = prepareSelector(action.selector)
@@ -57,26 +64,33 @@ export default function PluginManagr (plugins = []) {
   return this
 }
 
-// Inject plugin configuration in state
-PluginManagr.prototype.injectState = function (state) {
-  const plugins = {
-    fileActions: this.exportFileActions()
-  }
-  return {
-    ...state,
-    plugins
-  }
+PluginManagr.prototype.getMatchingFileActions = function (file) {
+  const name = file.name
+  const mime = file.stats.mime
+
+  return Object.keys(this.fileActions)
+    .map((fileActionId) => {
+      return this.fileActions[fileActionId]
+    })
+    .filter((fileAction) => {
+      const target = new RegExp(fileAction.target)
+      const selector = new RegExp(fileAction.selector)
+      return target.test(name) && (mime ? selector.test(mime) : true)
+    })
 }
 
-// Export actions for Frontend
-PluginManagr.prototype.exportFileActions = function () {
-  return Object.keys(this.fileActions).map((actionId) => {
-    const action = this.fileActions[actionId]
-    return {
-      title: action.title,
-      id: action.id,
-      selector: action.selector.toString().slice(1, -1),
-      target: action.target.toString().slice(1, -1)
-    }
-  })
+PluginManagr.prototype.renderFileActions = function (file) {
+  return this.getMatchingFileActions(file)
+    .map((fileAction) => {
+      if ('getComponent' in fileAction) {
+        const promise = fileAction.getComponent({ file })
+        const render = (actionComponent) => actionComponent
+        return <Async key={fileAction.id} promise={promise} then={render} />
+      }
+
+      return fileAction.component({
+        file,
+        key: fileAction.id
+      })
+    })
 }

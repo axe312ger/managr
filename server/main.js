@@ -65,22 +65,21 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('file/delete', (data) => {
-    const publicFilePath = path.join(data.path.join('/'), data.name)
-    const filePath = path.join(config.dir_content, publicFilePath)
+  socket.on('file/delete', (file) => {
+    const filePath = path.join(config.dir_content, file.path)
 
     rimraf(filePath, { glob: false }, (err) => {
       if (err) {
         socket.emit('action', {
           type: 'file/errored',
           msg: 'Unable to delete file',
-          file: publicFilePath
+          file: file.path
         })
         return
       }
       socket.emit('action', {
         type: 'file/deleted',
-        file: publicFilePath
+        file: file.path
       })
       tree()
         .then((fileTree) => {
