@@ -29,34 +29,65 @@ FileAPI.prototype.create = function (file, path) {
   sender.pipe(reciever)
 }
 
-FileAPI.prototype.read = function (file) {
-  // const sender = ss.createStream()
-  const reciever = ss.createStream()
-
-  // Emit action
-  ss(this.socket).emit('action', reciever, redux.fileRead(file))
-
-  // Monitor read progress
-  // Currently does not work since size is not know
-  let size = 0
-  reciever.on('data', function (chunk) {
-    size += chunk.length
-    console.log(Math.floor(size / file.stats.size * 100) + '%')
-  })
-  .pipe(blobStream())
-  .on('finish', function () {
-    var blob = this.toBlob()
-
-    var reader = new FileReader()
-    reader.addEventListener('loadend', function () {
-      console.log(this.result)
-      const link = document.createElement('a')
-      link.download = file.name
-      link.href = this.result // 'data:,' + fileContents;
-      link.click()
+FileAPI.prototype.readAsText = function (file) {
+  return this._read(file)
+    .then((blob) => {
+      var reader = new FileReader()
+      reader.addEventListener('loadend', () => this.result)
+      reader.readAsText(blob)
     })
-    // reader.readAsText(blob)
-    reader.readAsDataURL(blob)
+}
+
+FileAPI.prototype.readAsDataURL = function (file) {
+  return this._read(file)
+    .then((blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.addEventListener('loadend', () => resolve(reader.result))
+        reader.readAsDataURL(blob)
+      })
+    })
+}
+
+FileAPI.prototype.readAsArrayBuffer = function (file) {
+  return this._read(file)
+    .then((blob) => {
+      var reader = new FileReader()
+      reader.addEventListener('loadend', () => this.result)
+      reader.readAsArrayBuffer(blob)
+    })
+}
+
+FileAPI.prototype.readAsBinaryString = function (file) {
+  return this._read(file)
+    .then((blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.addEventListener('loadend', () => resolve(reader.result))
+        reader.readAsBinaryString(blob)
+      })
+    })
+}
+
+FileAPI.prototype._read = function (file) {
+  return new Promise((resolve, reject) => {
+    const reciever = ss.createStream()
+
+    // Emit action
+    ss(this.socket).emit('action', reciever, redux.fileRead(file))
+
+    // Monitor read progress
+    // Currently does not work since size is not know
+    let size = 0
+    reciever.on('data', function (chunk) {
+      size += chunk.length
+      console.log(Math.floor(size / file.stats.size * 100) + '%')
+    })
+    // @todo find a way to avoid blob-stream
+    .pipe(blobStream())
+    .on('finish', function () {
+      resolve(this.toBlob())
+    })
   })
 }
 
