@@ -2,7 +2,7 @@ import path from 'path'
 
 import DeletePlugin from './plugins/delete'
 import DownloadPlugin from './plugins/download'
-import MarkdownPlugin from './plugins/markdown'
+import TextEditorPlugin from './plugins/textEditor'
 
 export default function (io) {
   return {
@@ -10,7 +10,7 @@ export default function (io) {
     contentDir: path.resolve(__dirname, '..', '..', 'example-content'),
     plugins: [
       new DownloadPlugin(),
-      new MarkdownPlugin(),
+      new TextEditorPlugin(),
       new DeletePlugin()
     ]
   }
