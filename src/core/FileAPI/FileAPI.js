@@ -33,8 +33,10 @@ FileAPI.prototype.readAsText = function (file) {
   return this._read(file)
     .then((blob) => {
       var reader = new FileReader()
-      reader.addEventListener('loadend', () => this.result)
-      reader.readAsText(blob)
+      return new Promise((resolve, reject) => {
+        reader.addEventListener('loadend', () => resolve(reader.result))
+        reader.readAsText(blob)
+      })
     })
 }
 
@@ -53,8 +55,10 @@ FileAPI.prototype.readAsArrayBuffer = function (file) {
   return this._read(file)
     .then((blob) => {
       var reader = new FileReader()
-      reader.addEventListener('loadend', () => this.result)
-      reader.readAsArrayBuffer(blob)
+      return new Promise((resolve, reject) => {
+        reader.addEventListener('loadend', () => resolve(reader.result))
+        reader.readAsArrayBuffer(blob)
+      })
     })
 }
 
