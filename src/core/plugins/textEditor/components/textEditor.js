@@ -32,7 +32,7 @@ export default React.createClass({
         close: this.removeModal
       }
       require.ensure([], () => {
-        const EditorModal = require('./EditorModal').default
+        const EditorModal = require('./editorModal').default
         resolve(React.createElement(EditorModal, props))
       }, 'textEditor')
     })
