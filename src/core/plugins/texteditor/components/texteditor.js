@@ -1,41 +1,47 @@
 import React from 'react'
 import Modal from 'react-modal'
-// import Async from 'babel!react-promise'
-
-import EditorModal from './editorModal.js'
-
-import 'brace'
-// import AceEditor from 'react-ace'
-
-import 'brace/mode/javascript'
-import 'brace/mode/markdown'
-import 'brace/theme/github'
 
 export default React.createClass({
   render () {
     return (
       <div>
         <button onClick={this.edit}>Edit</button>
-        <div>{this.modal}</div>
+        <Modal isOpen={this.state.modalOpen} onRequestClose={this.removeModal}>
+          {this.state.modal}
+        </Modal>
       </div>
     )
   },
-  modal: null,
+  getInitialState () {
+    return {
+      modal: null,
+      modalOpen: false
+    }
+  },
   removeModal () {
-    this.modal = null
-    this.forceUpdate()
+    this.setState({
+      modal: null,
+      modalOpen: false
+    })
   },
   renderModal (text) {
-    this.modal = (
-      <Modal isOpen onRequestClose={this.removeModal}>
-        <EditorModal
-          file={this.props.file}
-          initialValue={text}
-          close={this.removeModal}
-        />
-      </Modal>
-    )
-    this.forceUpdate()
+    return new Promise((resolve, reject) => {
+      const props = {
+        file: this.props.file,
+        initialValue: text,
+        close: this.removeModal
+      }
+      require.ensure([], () => {
+        const EditorModal = require('./EditorModal').default
+        resolve(React.createElement(EditorModal, props))
+      }, 'textEditor')
+    })
+      .then((Modal) => {
+        this.setState({
+          modal: Modal,
+          modalOpen: true
+        })
+      })
   },
   edit () {
     this.context.managr.fileAPI.readAsText(this.props.file)

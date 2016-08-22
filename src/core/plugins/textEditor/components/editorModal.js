@@ -1,6 +1,5 @@
 import React from 'react'
 
-// import 'brace'
 import AceEditor from 'react-ace'
 
 import 'brace/mode/javascript'
@@ -14,11 +13,20 @@ export default React.createClass({
     this.setState({currentValue: newVal})
   },
   onSave () {
+    this.setState({
+      saveTitle: 'saving...',
+      saveEnabled: false
+    })
     this.context.managr.fileAPI.updateAsText(this.props.file, this.state.currentValue)
+      .then(() => {
+        this.props.close()
+      })
   },
   getInitialState () {
     return {
-      currentValue: this.props.initialValue
+      currentValue: this.props.initialValue,
+      saveTitle: 'save',
+      saveEnabled: true
     }
   },
   render () {
@@ -45,6 +53,7 @@ export default React.createClass({
         </main>
         <footer className={classes.actions}>
           <button onClick={this.props.close}>close</button>
+          <button disabled={!this.state.saveEnabled} onClick={this.onSave}>{this.state.saveTitle}</button>
         </footer>
       </div>
     )

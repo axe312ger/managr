@@ -6,6 +6,8 @@ export const FILE_CREATE = 'server/fileCreate'
 export const FILE_CREATED = 'managr/fileCreated'
 export const FILE_READ = 'server/fileRead'
 export const FILE_READED = 'managr/fileReaded'
+export const FILE_UPDATE = 'server/fileUpdate'
+export const FILE_UPDATED = 'managr/fileUpdated'
 export const FILE_DELETE = 'server/fileDelete'
 export const FILE_DELETED = 'managr/fileDeleted'
 
@@ -56,6 +58,20 @@ export function fileRead (file) {
 export function fileReaded (file) {
   return {
     type: FILE_READED,
+    file
+  }
+}
+
+export function fileUpdate (file) {
+  return {
+    type: FILE_UPDATE,
+    file
+  }
+}
+
+export function fileUpdated (file) {
+  return {
+    type: FILE_UPDATED,
     file
   }
 }

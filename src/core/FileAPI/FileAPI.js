@@ -95,6 +95,37 @@ FileAPI.prototype._read = function (file) {
   })
 }
 
+FileAPI.prototype.updateAsText = function (file, text) {
+  return new Promise((resolve, reject) => {
+    var blob = new File(
+      [text],
+      {
+        type: file.stats.mime
+      }
+    )
+
+    const reciever = ss.createStream()
+    const sender = ss.createBlobReadStream(blob)
+
+    // Emit action
+    ss(this.socket).emit('action', reciever, redux.fileUpdate(file))
+
+    // Monitor upload progress
+    let size = 0
+    sender.on('data', function (chunk) {
+      size += chunk.length
+      console.log(Math.floor(size / blob.size * 100) + '%')
+    })
+
+    sender.on('end', function (chunk) {
+      resolve()
+    })
+
+    // Send file
+    sender.pipe(reciever)
+  })
+}
+
 FileAPI.prototype.delete = function (file) {
   this.socket.emit('action', redux.fileDelete(file))
 }

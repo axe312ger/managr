@@ -3,6 +3,7 @@ import ss from 'socket.io-stream'
 import Tree from './FileAPI/Tree'
 import Create from './FileAPI/Create'
 import Read from './FileAPI/Read'
+import Update from './FileAPI/Update'
 import Delete from './FileAPI/Delete'
 
 import * as fileAPIredux from '../shared/redux/fileAPI'
@@ -13,6 +14,7 @@ export default function Server (config) {
   const tree = new Tree(config)
   const create = new Create(config)
   const read = new Read(config)
+  const update = new Update(config)
   const del = new Delete(config)
   const io = config.io
 
@@ -57,6 +59,21 @@ export default function Server (config) {
         .pipe(stream)
     }
 
+    const updateFile = function (stream, action) {
+      const file = action.file
+      const updateStream = update(file)
+        .on('error', () => {
+          const msg = 'Unable to update file'
+          socket.emit('action', fileAPIredux.fileErrored(msg, file))
+        })
+      stream
+        .on('end', () => {
+          socket.emit('action', fileAPIredux.fileUpdated(file))
+          getTree(fileAPIredux.getTree())
+        })
+        .pipe(updateStream)
+    }
+
     const deleteFile = function (action) {
       const file = action.file
       try {
@@ -88,6 +105,9 @@ export default function Server (config) {
       }
       if (action.type === fileAPIredux.FILE_READ) {
         readFile(stream, action)
+      }
+      if (action.type === fileAPIredux.FILE_UPDATE) {
+        updateFile(stream, action)
       }
     })
 
