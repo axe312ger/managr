@@ -10,6 +10,8 @@ export const FILE_UPDATE = 'server/fileUpdate'
 export const FILE_UPDATED = 'managr/fileUpdated'
 export const FILE_DELETE = 'server/fileDelete'
 export const FILE_DELETED = 'managr/fileDeleted'
+export const FILE_MOVE = 'server/fileMove'
+export const FILE_MOVED = 'managr/fileMoved'
 
 // Action Creators
 export function treeLoaded (tree, path) {
@@ -86,6 +88,21 @@ export function fileDelete (file) {
 export function fileDeleted (file) {
   return {
     type: FILE_DELETED,
+    file
+  }
+}
+
+export function fileMove (file, newPath) {
+  return {
+    type: FILE_MOVE,
+    file,
+    newPath
+  }
+}
+
+export function fileMoved (file) {
+  return {
+    type: FILE_MOVED,
     file
   }
 }

@@ -129,3 +129,7 @@ FileAPI.prototype.updateAsText = function (file, text) {
 FileAPI.prototype.delete = function (file) {
   this.socket.emit('action', redux.fileDelete(file))
 }
+
+FileAPI.prototype.move = function (file, newPath) {
+  this.socket.emit('action', redux.fileDelete(file, newPath))
+}

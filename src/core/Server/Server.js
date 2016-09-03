@@ -5,6 +5,7 @@ import Create from './FileAPI/Create'
 import Read from './FileAPI/Read'
 import Update from './FileAPI/Update'
 import Delete from './FileAPI/Delete'
+import Move from './FileAPI/Move'
 
 import * as fileAPIredux from '../shared/redux/fileAPI'
 
@@ -16,6 +17,7 @@ export default function Server (config) {
   const read = new Read(config)
   const update = new Update(config)
   const del = new Delete(config)
+  const move = new Move(config)
   const io = config.io
 
   io.on('connection', (socket) => {
@@ -86,6 +88,21 @@ export default function Server (config) {
       }
     }
 
+    const moveFile = function (action) {
+      const file = action.file
+      const oldPath = action.file.path
+      const newPath = action.newPath
+
+      try {
+        move(oldPath, newPath)
+        socket.emit('action', fileAPIredux.fileMoved(file))
+        getTree(fileAPIredux.getTree())
+      } catch (err) {
+        console.error('failed', err)
+        socket.emit('action', fileAPIredux.fileErrored('Unable to move file', file))
+      }
+    }
+
     socket.on('action', (action) => {
       console.log(`Server action ${action.type} arrived`)
 
@@ -96,10 +113,15 @@ export default function Server (config) {
       if (action.type === fileAPIredux.FILE_DELETE) {
         deleteFile(action)
       }
+
+      if (action.type === fileAPIredux.FILE_MOVE) {
+        moveFile(action)
+      }
     })
 
     ss(socket).on('action', function (stream, action) {
       console.log(`Streamed Server action ${action.type} arrived`)
+
       if (action.type === fileAPIredux.FILE_CREATE) {
         createFile(stream, action)
       }
