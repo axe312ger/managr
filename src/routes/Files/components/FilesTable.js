@@ -1,12 +1,8 @@
 import React from 'react'
-
-import Icon from 'components/Icon'
-import NodeTitle from 'components/NodeTitle'
-import NodeTimestamp from 'components/NodeTimestamp'
-import NodeSize from 'components/NodeSize'
-import { isNode } from 'services/datastructure'
+import Item from 'components/Item'
 
 import classes from './FilesTable.scss'
+import classesItem from 'components/Item/Item.scss'
 
 export const FilesTable = React.createClass({
   render () {
@@ -14,22 +10,15 @@ export const FilesTable = React.createClass({
       return <div>Sorry, no files loaded yet</div>
     }
 
-    const managr = this.context.managr
-
     const filesList = this.props.node.children.map((file) => {
-      const size = (isNode(file) ? null : <NodeSize size={file.stats.size} />)
-
-      const actions = managr.pluginAPI.renderFileActions(file)
-
       return (
-        <tr key={file.name}>
-          <td><Icon file={file} /></td>
-          <td><NodeTitle file={file} /></td>
-          <td>{size}</td>
-          <td><NodeTimestamp timestamp={file.stats.created} /></td>
-          <td><NodeTimestamp timestamp={file.stats.modified} /></td>
-          <td>{actions}</td>
-        </tr>
+        <Item
+          key={file.name}
+          file={file}
+          showSize
+          showTimes
+          showActions
+          />
       )
     })
 
@@ -37,21 +26,19 @@ export const FilesTable = React.createClass({
       <div>
         <h1>{this.props.node.name}</h1>
         <h4>Path {this.props.node.path} with { this.props.node.children.length } visible childs.</h4>
-        <table className={classes.table}>
-          <thead>
-            <tr>
-              <th />
-              <th>Name</th>
-              <th>Size</th>
-              <th>Created</th>
-              <th>Modified</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div className={classes.table}>
+          <div className={classesItem.wrapper}>
+            <div className={classesItem.icon} />
+            <div className={classesItem.title}>Name</div>
+            <div className={classesItem.size}>Size</div>
+            <div className={classesItem.created}>Created</div>
+            <div className={classesItem.modified}>Modified</div>
+            <div className={classesItem.actions}>Actions</div>
+          </div>
+          <div className={classes.tableContent}>
             { filesList }
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     )
   },
@@ -59,9 +46,6 @@ export const FilesTable = React.createClass({
     node: React.PropTypes.object.isRequired,
     lastUpdated: React.PropTypes.number.isRequired,
     path: React.PropTypes.array.isRequired
-  },
-  contextTypes: {
-    managr: React.PropTypes.object.isRequired
   }
 })
 

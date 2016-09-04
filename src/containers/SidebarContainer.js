@@ -8,6 +8,8 @@ import Sidebar from 'components/Sidebar'
 import { path as pathSelector } from 'redux/selectors/tree'
 import { sidebarNode, sidebarFilesShown } from 'redux/selectors/display'
 
+import { isNode } from 'services/datastructure'
+
 const mapStateToProps = (state) => {
   const node = sidebarNode(state) || {}
   const filesShown = sidebarFilesShown(state) || false
@@ -24,7 +26,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     pushDir: (dir) => {
-      dispatch(pushDir(dir))
+      if (isNode(dir)) {
+        dispatch(pushDir(dir))
+      }
     },
     popDir: () => {
       dispatch(popDir())
