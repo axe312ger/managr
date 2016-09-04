@@ -38,12 +38,11 @@ export default function Server (config) {
           const msg = err.code === 'EEXIST' ? 'File already exists' : 'Unable to create file'
           socket.emit('action', fileAPIredux.fileErrored(msg, file))
         })
-      stream
         .on('end', () => {
           socket.emit('action', fileAPIredux.fileCreated(file))
           getTree(fileAPIredux.getTree())
         })
-        .pipe(createStream)
+      stream.pipe(createStream)
     }
 
     const readFile = function (stream, action) {
@@ -53,12 +52,11 @@ export default function Server (config) {
           const msg = 'Unable to read file'
           socket.emit('action', fileAPIredux.fileErrored(msg, file))
         })
-      readStream
         .on('end', () => {
           socket.emit('action', fileAPIredux.fileReaded(file))
           getTree(fileAPIredux.getTree())
         })
-        .pipe(stream)
+      readStream.pipe(stream)
     }
 
     const updateFile = function (stream, action) {
@@ -68,12 +66,11 @@ export default function Server (config) {
           const msg = 'Unable to update file'
           socket.emit('action', fileAPIredux.fileErrored(msg, file))
         })
-      stream
         .on('end', () => {
           socket.emit('action', fileAPIredux.fileUpdated(file))
           getTree(fileAPIredux.getTree())
         })
-        .pipe(updateStream)
+      stream.pipe(updateStream)
     }
 
     const deleteFile = function (action) {
