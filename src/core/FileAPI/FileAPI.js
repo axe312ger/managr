@@ -1,5 +1,4 @@
 import ss from 'socket.io-stream'
-import blobStream from 'blob-stream'
 
 import * as redux from '../shared/redux/fileAPI'
 
@@ -20,7 +19,7 @@ FileAPI.prototype.create = function (file, path) {
 
   // Monitor upload progress
   let size = 0
-  sender.on('data', function (chunk) {
+  sender.on('data', (chunk) => {
     size += chunk.length
     console.log(Math.floor(size / file.size * 100) + '%')
   })
@@ -76,21 +75,20 @@ FileAPI.prototype.readAsBinaryString = function (file) {
 FileAPI.prototype._read = function (file) {
   return new Promise((resolve, reject) => {
     const reciever = ss.createStream()
+    let fileContent = []
+    let fileSize = 0
 
     // Emit action
     ss(this.socket).emit('action', reciever, redux.fileRead(file))
 
-    // Monitor read progress
-    // Currently does not work since size is not know
-    let size = 0
-    reciever.on('data', function (chunk) {
-      size += chunk.length
-      console.log(Math.floor(size / file.stats.size * 100) + '%')
+    reciever.on('data', (chunk) => {
+      fileContent.push(chunk)
+      fileSize += chunk.length
+      console.log(Math.floor(fileSize / file.stats.size * 100) + '%')
     })
-    // @todo find a way to avoid blob-stream
-    .pipe(blobStream())
-    .on('finish', function () {
-      resolve(this.toBlob())
+
+    reciever.on('finish', () => {
+      resolve(new Blob(fileContent))
     })
   })
 }
@@ -112,12 +110,12 @@ FileAPI.prototype.updateAsText = function (file, text) {
 
     // Monitor upload progress
     let size = 0
-    sender.on('data', function (chunk) {
+    sender.on('data', (chunk) => {
       size += chunk.length
       console.log(Math.floor(size / blob.size * 100) + '%')
     })
 
-    sender.on('end', function (chunk) {
+    sender.on('end', (chunk) => {
       resolve()
     })
 
