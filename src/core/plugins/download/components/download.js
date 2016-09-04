@@ -1,26 +1,33 @@
 import React from 'react'
+import { saveAs } from 'file-saver'
 
 export default React.createClass({
   render () {
     return <button onClick={this.read}>Download</button>
   },
   read () {
-    if (this.props.file.stats.size > 1.5 * 1024 * 1024) {
-      window.alert(
-        [
-          'This seems to be a pretty big file.',
-          'Downloads are currently very limited to your browser.',
-          'Lets see what happens!'
-        ].join('\n')
-      )
+    const { file } = this.props
+    let isFileSaverSupported = false
+
+    // Simple feature detection
+    try {
+      isFileSaverSupported = !!new Blob()
+    } catch (e) {}
+
+    if (isFileSaverSupported) {
+      this.context.managr.fileAPI.readAsBlob(file)
+        .then((blob) => saveAs(blob, file.name))
+      return
     }
-    this.context.managr.fileAPI.readAsDataURL(this.props.file)
-      .then((dataURL) => {
-        const link = document.createElement('a')
-        link.download = this.props.file.name
-        link.href = dataURL
-        link.click()
-      })
+
+    window.alert(
+      [
+        'Unable to download file.',
+        '',
+        'Your browser does not support stream downloads yet.',
+        'Please use a modern browser like Chrome, Firefox or Edge.'
+      ].join('\n')
+    )
   },
   propTypes: {
     file: React.PropTypes.object.isRequired

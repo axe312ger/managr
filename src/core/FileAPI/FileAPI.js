@@ -29,7 +29,7 @@ FileAPI.prototype.create = function (file, path) {
 }
 
 FileAPI.prototype.readAsText = function (file) {
-  return this._read(file)
+  return this.readAsBlob(file)
     .then((blob) => {
       var reader = new FileReader()
       return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ FileAPI.prototype.readAsText = function (file) {
 }
 
 FileAPI.prototype.readAsDataURL = function (file) {
-  return this._read(file)
+  return this.readAsBlob(file)
     .then((blob) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -51,7 +51,7 @@ FileAPI.prototype.readAsDataURL = function (file) {
 }
 
 FileAPI.prototype.readAsArrayBuffer = function (file) {
-  return this._read(file)
+  return this.readAsBlob(file)
     .then((blob) => {
       var reader = new FileReader()
       return new Promise((resolve, reject) => {
@@ -62,7 +62,7 @@ FileAPI.prototype.readAsArrayBuffer = function (file) {
 }
 
 FileAPI.prototype.readAsBinaryString = function (file) {
-  return this._read(file)
+  return this.readAsBlob(file)
     .then((blob) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -72,7 +72,7 @@ FileAPI.prototype.readAsBinaryString = function (file) {
     })
 }
 
-FileAPI.prototype._read = function (file) {
+FileAPI.prototype.readAsBlob = function (file) {
   return new Promise((resolve, reject) => {
     const reciever = ss.createStream()
     let fileContent = []
