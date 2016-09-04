@@ -87,9 +87,7 @@ FileAPI.prototype._read = function (file) {
       console.log(Math.floor(fileSize / file.stats.size * 100) + '%')
     })
 
-    reciever.on('finish', () => {
-      resolve(new Blob(fileContent))
-    })
+    reciever.on('finish', () => resolve(new Blob(fileContent)))
   })
 }
 
@@ -115,9 +113,7 @@ FileAPI.prototype.updateAsText = function (file, text) {
       console.log(Math.floor(size / blob.size * 100) + '%')
     })
 
-    sender.on('end', (chunk) => {
-      resolve()
-    })
+    sender.on('end', () => resolve())
 
     // Send file
     sender.pipe(reciever)
