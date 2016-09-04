@@ -1,3 +1,6 @@
+import React from 'react'
+import Async from 'babel!react-promise'
+
 // Human friendly selectors to support *, string matching and regex
 const prepareSelector = (selector) => {
   // transform asterisk to match all regex
@@ -33,9 +36,6 @@ const prepareFileAction = (action) => {
 
   return action
 }
-
-import React from 'react'
-import Async from 'babel!react-promise'
 
 export default function PluginAPI (config) {
   const plugins = config.plugins

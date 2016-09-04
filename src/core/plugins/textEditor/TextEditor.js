@@ -9,14 +9,4 @@ TextEditor.prototype.fileActions = [{
   title: 'TextEditor',
   selector: /^text\//,
   component: (props) => React.createElement(textEditor, props)
-  // Async is not working, seems not to work component and forceUpdate() fails
-  // @todo find out why
-  // getComponent: (props) => {
-  //   return new Promise((resolve, reject) => {
-  //     require.ensure([], () => {
-  //       const component = require('./components/textEditor').default
-  //       resolve(React.createElement(component, props))
-  //     }, 'textEditor')
-  //   })
-  // }
 }]
