@@ -1,26 +1,13 @@
 import { saveConfig } from './Storage'
 
+import { TREE_LOADED } from 'core/shared/redux/fileAPI'
+
 // Constants
-export const TREE_LOADED = 'managr/treeLoaded'
-export const GET_TREE = 'server/getTree'
 export const CHANGE_PATH = 'managr/changePath'
 export const PUSH_DIR = 'managr/pushDir'
 export const POP_DIR = 'managr/popDir'
 
 // Action Creators
-export function treeLoaded (tree) {
-  return {
-    type: TREE_LOADED,
-    tree
-  }
-}
-
-export function getTree () {
-  return {
-    type: GET_TREE
-  }
-}
-
 export function changePath (path) {
   return dispatch => {
     dispatch({

@@ -6,8 +6,25 @@
 
 
 ## Table of Contents
+1. [About](#about)
 1. [Development](#development)
 1. [Thank You](#thank-you)
+
+## About
+
+Managr tries to be a hackable file manager based on common web standards, libraries and techniques. The core is designed as minimal implementation for a flexible CRUD file api. The datasource might be anything from the local file system to cloud storages or git repositories.
+
+Developer freedom and full configurability is a main goal for managr. Expect for the file api, managr does implement any custom coding patterns which would force developers to drop their own coding preferences and style.
+
+The following web standards are used:
+* Websockets
+* Stream based data transportation
+* Grid layout with fallback to flexbox
+
+Build with these broadly used libraries:
+* react
+* redux
+* webpack with effective chunking and async loading
 
 ## Development
 Further instructions can be found here: https://github.com/davezuko/react-redux-starter-kit

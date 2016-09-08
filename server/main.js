@@ -1,9 +1,6 @@
 import http from 'http'
 import Koa from 'koa'
 import socket from 'socket.io'
-import fs from 'fs'
-import path from 'path'
-import rimraf from 'rimraf'
 import convert from 'koa-convert'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
@@ -14,9 +11,9 @@ import _debug from 'debug'
 import config from '../config'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
-import tree from './lib/tree'
 
-import { GET_TREE, treeLoaded } from '../src/redux/modules/Files'
+import ManagrServer from '../src/core/Server'
+import ManagrConfig from '../src/core/config'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -26,75 +23,12 @@ const io = socket()
 
 io.attach(server)
 
-io.on('connection', (socket) => {
-  console.log('Socket connected:', socket.id)
+// ========================================================
+// Managr Backend Setup
+// ========================================================
 
-  socket.on('action', (action) => {
-    console.log(action)
-    if (action.type === GET_TREE) {
-      return tree()
-        .then((fileTree) => {
-          socket.emit('action', treeLoaded(fileTree))
-        })
-    }
-  })
-
-  socket.on('file/create', (data) => {
-    const publicFilePath = path.join(data.path.join('/'), data.name)
-    const filePath = path.join(config.dir_content, publicFilePath)
-
-    fs.writeFile(filePath, data.fileData, (err) => {
-      if (err) {
-        socket.emit('action', {
-          type: 'file/errored',
-          msg: 'Unable to open file for writing',
-          file: publicFilePath
-        })
-        return
-      }
-
-      socket.emit('action', {
-        type: 'file/created',
-        file: publicFilePath
-      })
-
-      tree()
-        .then((fileTree) => {
-          socket.emit('action', treeLoaded(fileTree))
-        })
-    })
-  })
-
-  socket.on('file/delete', (data) => {
-    const publicFilePath = path.join(data.path.join('/'), data.name)
-    const filePath = path.join(config.dir_content, publicFilePath)
-
-    rimraf(filePath, { glob: false }, (err) => {
-      if (err) {
-        socket.emit('action', {
-          type: 'file/errored',
-          msg: 'Unable to delete file',
-          file: publicFilePath
-        })
-        return
-      }
-      socket.emit('action', {
-        type: 'file/deleted',
-        file: publicFilePath
-      })
-      tree()
-        .then((fileTree) => {
-          socket.emit('action', treeLoaded(fileTree))
-        })
-    })
-  })
-
-  socket.on('disconnect', () => {
-    console.log('Socket disconnected', socket.id)
-  })
-
-  socket.on('error', (e) => console.error(e.stack))
-})
+const managrConfig = ManagrConfig(io)
+ManagrServer(managrConfig)
 
 // Enable koa-proxy if it has been enabled in the config.
 if (config.proxy && config.proxy.enabled) {

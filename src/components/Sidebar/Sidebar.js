@@ -4,7 +4,7 @@ import { isNode } from 'services/datastructure'
 
 import classes from './Sidebar.scss'
 
-import Folder from './Folder'
+import Item from 'components/Item'
 
 export const Sidebar = React.createClass({
   render () {
@@ -13,27 +13,37 @@ export const Sidebar = React.createClass({
     const FilesToggle = <button onClick={filesToggleCb}>{filesToggleTitle}</button>
 
     let backButton = null
+    let items = []
+
     if (this.props.path.length) {
       const fakeFile = {
         name: '..',
         children: []
       }
-      backButton = <Folder key={fakeFile.name} file={fakeFile} changePath={this.props.popDir} />
+      backButton = <Item
+        key={fakeFile.name}
+        file={fakeFile}
+        onClick={this.props.popDir} />
     }
 
-    const folders = isNode(this.props.node) ? this.props.node.children.map((file) => (
-      <Folder key={file.name} file={file} changePath={this.props.pushDir} />
-    )) : []
+    if (isNode(this.props.node)) {
+      items = this.props.node.children.map((file) => (
+        <Item
+          key={file.name}
+          file={file}
+          onClick={this.props.pushDir} />
+      ))
+    }
 
     return (
       <div className={classes.wrapper}>
+        <header>
+          {FilesToggle}
+        </header>
         <main>
           {backButton}
-          {folders}
+          {items}
         </main>
-        <footer>
-          {FilesToggle}
-        </footer>
       </div>
     )
   },

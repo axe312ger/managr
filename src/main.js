@@ -8,7 +8,8 @@ import io from 'socket.io-client'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 
-import managr from './plugins/index'
+import ManagrConfig from '../src/core/config'
+import Managr from './core'
 
 // ========================================================
 // Browser History Setup
@@ -25,20 +26,17 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 // so we need to provide a custom `selectLocationState` to inform
 // react-router-redux of its location.
 const socket = io(__API__)
-const initialState = managr.injectState(window.___INITIAL_STATE__)
+const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState, browserHistory, socket)
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
 })
 
 // ========================================================
-// Developer Tools Setup
+// Managr Frontend Setup
 // ========================================================
-if (__DEBUG__) {
-  if (window.devToolsExtension) {
-    window.devToolsExtension.open()
-  }
-}
+const managrConfig = ManagrConfig(socket)
+const managr = Managr(managrConfig)
 
 // ========================================================
 // Render Setup
@@ -62,13 +60,11 @@ let render = () => {
         },
         getChildContext () {
           return {
-            fileActions: managr.fileActions,
-            socket
+            managr
           }
         },
         childContextTypes: {
-          fileActions: React.PropTypes.object,
-          socket: React.PropTypes.object
+          managr: React.PropTypes.object
         }
       })
     ),
