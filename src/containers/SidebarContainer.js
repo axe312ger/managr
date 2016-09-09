@@ -8,7 +8,7 @@ import Sidebar from 'components/Sidebar'
 import { path as pathSelector } from 'redux/selectors/tree'
 import { sidebarNode, sidebarFilesShown } from 'redux/selectors/display'
 
-import { isNode } from 'services/datastructure'
+import { isNode } from 'utils/datastructure'
 
 const mapStateToProps = (state) => {
   const node = sidebarNode(state) || {}
