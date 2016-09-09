@@ -20,8 +20,13 @@ export const FilesView = React.createClass({
         <Dropzone className={classes.dropzone} activeClassName={classes.dropzoneActive}
           ref='dropzone' disableClick multiple onDrop={onDrop}>
           <div className={classes.hint}>
-            <span>Upload files by dropping them into this area or by </span>
-            <a onClick={onClick}>clicking here</a>
+            <p className={classes.hintDesktop}>
+              <span>Upload files by dropping them into this area or by </span>
+              <a onClick={onClick}>clicking here</a>
+            </p>
+            <p className={classes.hintMobile}>
+              <a onClick={onClick}>Upload files by clicking here</a>
+            </p>
           </div>
           <FilesTable />
         </Dropzone>

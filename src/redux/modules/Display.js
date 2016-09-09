@@ -1,3 +1,5 @@
+import { saveConfig } from './Storage'
+
 // Constants
 export const SIDEBAR_SHOW_FILES = 'managr/display/sidebar/showFiles'
 export const SIDEBAR_HIDE_FILES = 'managr/display/sidebar/hideFiles'
@@ -5,10 +7,38 @@ export const TABLE_SHOW_FOLDERS = 'managr/display/table/showFolders'
 export const TABLE_HIDE_FOLDERS = 'managr/display/table/hideFolders'
 
 // Action Creators
-export function sidebarShowFiles () { return { type: SIDEBAR_SHOW_FILES } }
-export function sidebarHideFiles () { return { type: SIDEBAR_HIDE_FILES } }
-export function tableShowFolders () { return { type: TABLE_SHOW_FOLDERS } }
-export function tableHideFolders () { return { type: TABLE_HIDE_FOLDERS } }
+export function sidebarShowFiles () {
+  return dispatch => {
+    dispatch({
+      type: SIDEBAR_SHOW_FILES
+    })
+    dispatch(saveConfig())
+  }
+}
+export function sidebarHideFiles () {
+  return dispatch => {
+    dispatch({
+      type: SIDEBAR_HIDE_FILES
+    })
+    dispatch(saveConfig())
+  }
+}
+export function tableShowFolders () {
+  return dispatch => {
+    dispatch({
+      type: TABLE_SHOW_FOLDERS
+    })
+    dispatch(saveConfig())
+  }
+}
+export function tableHideFolders () {
+  return dispatch => {
+    dispatch({
+      type: TABLE_HIDE_FOLDERS
+    })
+    dispatch(saveConfig())
+  }
+}
 
 // Reducer
 export const defaultState = {
@@ -16,7 +46,7 @@ export const defaultState = {
     showFiles: false
   },
   table: {
-    showFolders: false
+    showFolders: true
   }
 }
 

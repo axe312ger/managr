@@ -22,6 +22,26 @@
   border-top-right-radius: 0;
   background: $lightGrey;
   font-size: 0.9rem;
+
+  p {
+    margin: 0
+  }
+
+  &Mobile {
+    display: none;
+
+    @media screen and (max-width: $breakpoint-desktop - 1) {
+      display: block;
+    }
+  }
+
+  &Desktop {
+    display: none;
+
+    @media screen and (min-width: $breakpoint-desktop) {
+      display: block;
+    }
+  }
 }
 
 .dropzoneActive {
