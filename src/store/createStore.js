@@ -18,6 +18,7 @@ const ActionWhiteList = [SAVE_CONFIG]
 const storeBlacklist = ['*']
 const storeWhitelist = [
   'settings',
+  'display',
   ['files', ['path']]
 ]
 
