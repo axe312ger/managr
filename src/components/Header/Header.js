@@ -14,7 +14,7 @@ export const Header = (props) => (
     </div>
 
     <div className={classes.menuWrapper}>
-      <Link to={props.currentPath} activeClassName={classes.activeRoute}>
+      <Link to={props.pathURI} activeClassName={classes.activeRoute}>
         Files
       </Link>
       {' · '}
@@ -26,7 +26,7 @@ export const Header = (props) => (
 )
 
 Header.propTypes = {
-  currentPath: React.PropTypes.string.isRequired
+  pathURI: React.PropTypes.string.isRequired
 }
 
 export default Header

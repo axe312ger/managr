@@ -1,19 +1,14 @@
 import { connect } from 'react-redux'
 
 import Header from 'components/Header'
-import { currentPath as currentPathSelector } from 'redux/selectors/tree'
+import { pathURI as pathURISelector } from 'redux/selectors/tree'
 
 const mapStateToProps = (state) => {
-  const currentPath = currentPathSelector(state)
+  const pathURI = pathURISelector(state)
 
   return {
-    currentPath
+    pathURI
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps)(Header)

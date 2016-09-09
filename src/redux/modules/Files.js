@@ -65,7 +65,7 @@ export default function (state = defaultState, action) {
       }
     case PUSH_DIR:
       const { dir } = action
-      const nextPath = [...state.path, dir]
+      const nextPath = [...state.path, dir.name]
       return {
         ...state,
         path: nextPath

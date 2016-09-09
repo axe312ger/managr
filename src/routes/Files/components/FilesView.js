@@ -3,24 +3,9 @@ import Dropzone from 'react-dropzone'
 
 import FilesTable from '../containers/FilesTableContainer'
 import classes from './FilesView.scss'
-
-const splatToPath = (splat) => splat.split('/').slice(1)
+import HistoryHelper from './HistoryHelper'
 
 export const FilesView = React.createClass({
-  componentWillMount () {
-    // Set initial path based on url
-    const path = splatToPath(this.props.routeParams.splat)
-    this.props.changePath(path)
-  },
-  componentWillUpdate (nextProps) {
-    const currentParamPath = '/files' + this.props.routeParams.splat
-    const nextCurrentPath = nextProps.currentPath
-
-    // Push new path to browser history if current path changed
-    if (nextCurrentPath !== currentParamPath) {
-      this.props.push(nextProps.currentPath)
-    }
-  },
   render () {
     const onDrop = (files) => {
       files.map((file) => {
@@ -33,6 +18,12 @@ export const FilesView = React.createClass({
     }
     return (
       <div>
+        <HistoryHelper
+          routeParams={this.props.routeParams}
+          changePath={this.props.changePath}
+          pathURI={this.props.pathURI}
+          push={this.props.push}
+        />
         <Dropzone className={classes.dropzone} activeClassName={classes.dropzoneActive}
           ref='dropzone' disableClick multiple onDrop={onDrop}>
           <div className={classes.hint}>
@@ -47,7 +38,7 @@ export const FilesView = React.createClass({
   propTypes: {
     routeParams: React.PropTypes.object.isRequired,
     changePath: React.PropTypes.func.isRequired,
-    currentPath: React.PropTypes.string.isRequired,
+    pathURI: React.PropTypes.string.isRequired,
     path: React.PropTypes.array.isRequired,
     push: React.PropTypes.func.isRequired
   },
