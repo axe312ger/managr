@@ -20,8 +20,9 @@
 }
 
 .sidebar {
-  min-width: 16rem;
+  max-width: 8rem;
   width: 25vw;
+  max-width: 12.5rem;
 
   overflow: hidden;
   overflow-y: auto;
@@ -29,4 +30,8 @@
   padding: 0 1rem;
 
   border-right: 3px solid $mediumGrey;
+
+  @media screen and (max-width: $breakpoint-mobile) {
+    display: none;
+  }
 }

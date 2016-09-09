@@ -8,10 +8,18 @@
 
 .icon {
   flex: 0;
-  margin-right: 1rem;
+  margin-right: .4rem;
 
   > div {
-    width: 30px;
+    width: 1.5rem;
+  }
+
+  @media screen and (min-width: $breakpoint-desktop) {
+    margin-right: 1rem;
+
+    > div {
+      width: 30px;
+    }
   }
 }
 
