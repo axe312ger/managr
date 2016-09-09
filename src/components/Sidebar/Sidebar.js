@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isNode } from 'services/datastructure'
+import { isNode } from 'utils/datastructure'
 
 import classes from './Sidebar.scss'
 

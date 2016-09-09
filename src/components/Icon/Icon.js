@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isLeaf, isNode } from 'services/datastructure'
+import { isLeaf, isNode } from 'utils/datastructure'
 
 import classes from './Icon.scss'
 

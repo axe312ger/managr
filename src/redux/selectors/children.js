@@ -1,4 +1,4 @@
-import { isNode, isLeaf } from 'services/datastructure'
+import { isNode, isLeaf } from 'utils/datastructure'
 
 const sortByType = (a, b) => {
   if (isNode(a) === isNode(b)) {

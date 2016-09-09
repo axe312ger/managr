@@ -1,21 +1,22 @@
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 
 import { changePath } from 'redux/modules/Files'
-import { currentPath as currentPathSelector, path as pathSelector } from 'redux/selectors/tree'
+import { pathURI as pathURISelector, path as pathSelector } from 'redux/selectors/tree'
 import { tableNode } from 'redux/selectors/display'
 
 import FilesView from '../components/FilesView'
 
+import { pushPath } from 'utils/navigation'
+
 const mapStateToProps = (state) => {
   const node = tableNode(state) || {}
-  const currentPath = currentPathSelector(state)
+  const pathURI = pathURISelector(state)
   const path = pathSelector(state)
 
   return {
     node,
     path,
-    currentPath,
+    pathURI,
     lastUpdated: node.lastUpdated || 0
   }
 }
@@ -26,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(changePath(path))
     },
     push: (path) => {
-      dispatch(push(path))
+      dispatch(pushPath(path))
     }
   }
 }

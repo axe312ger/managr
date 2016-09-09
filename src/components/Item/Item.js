@@ -5,7 +5,7 @@ import Icon from 'components/Icon'
 import NodeTitle from 'components/NodeTitle'
 import NodeTimestamp from 'components/NodeTimestamp'
 import NodeSize from 'components/NodeSize'
-import { isNode } from 'services/datastructure'
+import { isNode } from 'utils/datastructure'
 
 export const Item = (props, context) => {
   const { file, showSize, showTime, showActions, onClick } = props
