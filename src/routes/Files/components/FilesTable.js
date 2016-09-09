@@ -6,8 +6,21 @@ import classesItem from 'components/Item/Item.scss'
 
 export const FilesTable = React.createClass({
   render () {
+    let backButton = null
+
     if (!this.props.node.children) {
       return <div>Sorry, no files loaded yet</div>
+    }
+
+    if (this.props.tableFoldersShown && this.props.path.length) {
+      const fakeFile = {
+        name: '..',
+        children: []
+      }
+      backButton = <Item
+        key={fakeFile.name}
+        file={fakeFile}
+        onClick={this.props.popDir} />
     }
 
     const filesList = this.props.node.children.map((file) => {
@@ -18,6 +31,7 @@ export const FilesTable = React.createClass({
           showSize
           showTimes
           showActions
+          onClick={this.props.pushDir}
           />
       )
     })
@@ -36,7 +50,8 @@ export const FilesTable = React.createClass({
             <div className={classesItem.actions}>Actions</div>
           </div>
           <div className={classes.tableContent}>
-            { filesList }
+            {backButton}
+            {filesList}
           </div>
         </div>
       </div>
@@ -45,7 +60,10 @@ export const FilesTable = React.createClass({
   propTypes: {
     node: React.PropTypes.object.isRequired,
     lastUpdated: React.PropTypes.number.isRequired,
-    path: React.PropTypes.array.isRequired
+    path: React.PropTypes.array.isRequired,
+    pushDir: React.PropTypes.func.isRequired,
+    popDir: React.PropTypes.func.isRequired,
+    tableFoldersShown: React.PropTypes.bool.isRequired
   }
 })
 
