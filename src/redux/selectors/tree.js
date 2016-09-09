@@ -5,12 +5,7 @@ import { encodePath } from 'utils/navigation'
 export const tree = (state) => state.files.tree
 export const path = (state) => state.files.path
 
-export const pathURI = (state) => {
-  return [
-    '/files',
-    ...encodePath(path(state))
-  ].join('/')
-}
+export const pathURI = (state) => encodePath(path(state))
 
 export const getCurrentNode = createSelector(tree, path, (tree, path) => {
   if (!(tree && tree.children)) {

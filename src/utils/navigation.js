@@ -1,5 +1,3 @@
-import { push } from 'react-router-redux'
-
 // This is causing a wrong url when hitting reload on a path including
 // an escaped character. Can be fixed via:
 // https://github.com/reactjs/react-router/blob/master/upgrade-guides/v2.0.0.md#custom-query-string-parsing
@@ -18,14 +16,13 @@ function reactEncodeURIComponent (uri) {
 }
 
 export function encodePath (path) {
-  return path.map((name) => reactEncodeURIComponent(name))
+  const encoded = path.map((name) => reactEncodeURIComponent(name))
+  return [
+    '/files',
+    ...encoded
+  ].join('/')
 }
 
-export function encodePathString (path) {
-  return encodePath(path.split('/'))
-    .join('/')
-}
-
-export function pushPath (path) {
-  return push(encodePathString(path))
+export function decodePath (pathString) {
+  return pathString.split('/').slice(2).map((name) => decodeURI(name))
 }

@@ -1,3 +1,7 @@
+import { LOCATION_CHANGE, push } from 'react-router-redux'
+
+import { encodePath, decodePath } from 'utils/navigation'
+
 import { saveConfig } from './Storage'
 
 import { TREE_LOADED } from 'core/shared/redux/fileAPI'
@@ -14,25 +18,30 @@ export function changePath (path) {
       type: CHANGE_PATH,
       path
     })
+    dispatch(push(encodePath(path)))
     dispatch(saveConfig())
   }
 }
 
 export function pushDir (dir) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: PUSH_DIR,
       dir
     })
+    const { files } = getState()
+    dispatch(push(encodePath(files.path)))
     dispatch(saveConfig())
   }
 }
 
 export function popDir () {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: POP_DIR
     })
+    const { files } = getState()
+    dispatch(push(encodePath(files.path)))
     dispatch(saveConfig())
   }
 }
@@ -45,6 +54,7 @@ export const defaultState = {
 }
 
 export default function (state = defaultState, action) {
+  let path
   switch (action.type) {
     case TREE_LOADED:
       return {
@@ -52,8 +62,19 @@ export default function (state = defaultState, action) {
         tree: action.tree,
         lastUpdated: Date.now()
       }
+    case LOCATION_CHANGE:
+      path = state.path
+      const { pathname } = action.payload
+      if (pathname.indexOf('/files') !== -1 && pathname !== encodePath(path)) {
+        path = decodePath(pathname)
+      }
+
+      return {
+        ...state,
+        path
+      }
     case CHANGE_PATH:
-      let { path } = action
+      path = action.path
 
       if (typeof path === 'string') {
         path = path.split('/')

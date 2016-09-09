@@ -3,7 +3,6 @@ import Dropzone from 'react-dropzone'
 
 import FilesTable from '../containers/FilesTableContainer'
 import classes from './FilesView.scss'
-import HistoryHelper from './HistoryHelper'
 
 export const FilesView = React.createClass({
   render () {
@@ -18,12 +17,6 @@ export const FilesView = React.createClass({
     }
     return (
       <div>
-        <HistoryHelper
-          routeParams={this.props.routeParams}
-          changePath={this.props.changePath}
-          pathURI={this.props.pathURI}
-          push={this.props.push}
-        />
         <Dropzone className={classes.dropzone} activeClassName={classes.dropzoneActive}
           ref='dropzone' disableClick multiple onDrop={onDrop}>
           <div className={classes.hint}>
@@ -36,11 +29,7 @@ export const FilesView = React.createClass({
     )
   },
   propTypes: {
-    routeParams: React.PropTypes.object.isRequired,
-    changePath: React.PropTypes.func.isRequired,
-    pathURI: React.PropTypes.string.isRequired,
-    path: React.PropTypes.array.isRequired,
-    push: React.PropTypes.func.isRequired
+    path: React.PropTypes.array.isRequired
   },
   contextTypes: {
     managr: React.PropTypes.object.isRequired
