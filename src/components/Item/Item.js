@@ -8,7 +8,7 @@ import NodeSize from 'components/NodeSize'
 import { isNode } from 'utils/datastructure'
 
 export const Item = (props, context) => {
-  const { file, showSize, showTime, showActions, onClick } = props
+  const { file, showSize, showTimes, showActions, onClick } = props
   const wrapperClass = isNode(file) ? classes.wrapperClickable : classes.wrapper
   let size = null
   let created = null
@@ -25,25 +25,26 @@ export const Item = (props, context) => {
   if (showSize) {
     size = (isNode(file) ? null : <NodeSize size={file.stats.size} />)
   }
-  if (showTime) {
-    created = <div className={classes.created}><NodeTimestamp timestamp={file.stats.created} /></div>
-    modified = <div className={classes.modified}><NodeTimestamp timestamp={file.stats.modified} /></div>
+  if (showTimes) {
+    created = <NodeTimestamp timestamp={file.stats.created} />
+    modified = <NodeTimestamp timestamp={file.stats.modified} />
   }
+
   if (showActions) {
     actions = context.managr.pluginAPI.renderFileActions(file)
   }
   return (
     <div className={wrapperClass} onClick={onClickCb}>
       <div className={classes.icon}>
-        <Icon file={props.file} />
+        <Icon file={file} />
       </div>
       <div className={classes.title}>
-        <NodeTitle file={props.file} />
+        <NodeTitle file={file} />
       </div>
-      { size }
-      { modified }
-      { created }
-      { actions }
+      <div className={classes.size}>{size}</div>
+      <div className={classes.created}>{modified}</div>
+      <div className={classes.modified}>{created}</div>
+      <div className={classes.actions}>{actions}</div>
     </div>
   )
 }
@@ -52,7 +53,7 @@ Item.propTypes = {
   file: React.PropTypes.object.isRequired,
   onClick: React.PropTypes.func,
   showSize: React.PropTypes.bool,
-  showTime: React.PropTypes.bool,
+  showTimes: React.PropTypes.bool,
   showActions: React.PropTypes.bool
 }
 

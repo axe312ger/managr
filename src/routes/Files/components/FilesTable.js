@@ -20,19 +20,22 @@ export const FilesTable = React.createClass({
       backButton = <Item
         key={fakeFile.name}
         file={fakeFile}
+        className={classes.item}
         onClick={this.props.popDir} />
     }
 
     const filesList = this.props.node.children.map((file) => {
       return (
-        <Item
-          key={file.name}
-          file={file}
-          showSize
-          showTimes
-          showActions
-          onClick={this.props.pushDir}
-          />
+        <div className={classes.item}>
+          <Item
+            key={file.name}
+            file={file}
+            showSize
+            showTimes
+            showActions
+            onClick={this.props.pushDir}
+            />
+        </div>
       )
     })
 
@@ -41,7 +44,7 @@ export const FilesTable = React.createClass({
         <h1>{this.props.node.name}</h1>
         <h4>Path {this.props.node.path} with { this.props.node.children.length } visible childs.</h4>
         <div className={classes.table}>
-          <div className={classesItem.wrapper}>
+          <div className={[classesItem.wrapper, classes.tableHeader].join(' ')}>
             <div className={classesItem.icon} />
             <div className={classesItem.title}>Name</div>
             <div className={classesItem.size}>Size</div>

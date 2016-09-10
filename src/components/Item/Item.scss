@@ -24,10 +24,24 @@
 }
 
 .title {
-  flex: 1 1 auto;
+  flex: 4 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.size {
+  flex: 1 0 auto;
+}
+.created {
+  flex: 1 0 auto;
+}
+.modified {
+  flex: 1 0 auto;
+}
+.actions {
+  display: flex;
+  flex: 0 0 auto;
 }
 
 .wrapperClickable {

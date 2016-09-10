@@ -1,48 +1,19 @@
 @import '../../../styles/config';
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
+  // display: grid;
+}
 
-  th {
-    color: $mediumGrey;
-    font-weight: normal;
-    text-align: left;
-  }
+.tableHeader {
+  color: $mediumGrey;
+}
 
-  td, th {
-    padding: 0 1rem;
-  }
+.item {
+  border-top: 0.5rem solid $background;
+  background: $backgroundExposed;
+  padding: 0 1rem;
 
-  tbody {
-    tr {
-      min-height: 60px;
-      border-top: 0.5rem solid $background;
-      background: $backgroundExposed;
-
-      &:first-child {
-        border-top: none;
-      }
-
-      td {
-        width: auto;
-        white-space: nowrap;
-
-        &:first-child {
-          padding-right: 0;
-          > div {
-            width: 50px;
-            margin: .5rem 0;
-          }
-        }
-
-        &:nth-child(2) {
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-    }
+  &:first-child {
+    border-top: none;
   }
 }
