@@ -4,6 +4,9 @@
   display: flex;
   align-items: center;
   height: 50px;
+
+  display: grid;
+  grid-template-columns: 30px auto 6rem 6rem 6rem auto;
 }
 
 .icon {

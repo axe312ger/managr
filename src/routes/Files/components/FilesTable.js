@@ -44,7 +44,7 @@ export const FilesTable = React.createClass({
         <h1>{this.props.node.name}</h1>
         <h4>Path {this.props.node.path} with { this.props.node.children.length } visible childs.</h4>
         <div className={classes.table}>
-          <div className={[classesItem.wrapper, classes.tableHeader].join(' ')}>
+          <div className={classes.tableHeader}>
             <div className={classesItem.icon} />
             <div className={classesItem.title}>Name</div>
             <div className={classesItem.size}>Size</div>
@@ -52,10 +52,8 @@ export const FilesTable = React.createClass({
             <div className={classesItem.modified}>Modified</div>
             <div className={classesItem.actions}>Actions</div>
           </div>
-          <div className={classes.tableContent}>
-            {backButton}
-            {filesList}
-          </div>
+          {backButton}
+          {filesList}
         </div>
       </div>
     )
