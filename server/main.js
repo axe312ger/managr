@@ -12,8 +12,7 @@ import config from '../config'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
 
-import ManagrServer from '../src/core/Server'
-import ManagrConfig from '../src/core/config'
+import ManagrServer from 'managr-api/Server'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -27,8 +26,10 @@ io.attach(server)
 // Managr Backend Setup
 // ========================================================
 
-const managrConfig = ManagrConfig(io)
-ManagrServer(managrConfig)
+ManagrServer({
+  io,
+  contentDir: config.dir_content
+})
 
 // Enable koa-proxy if it has been enabled in the config.
 if (config.proxy && config.proxy.enabled) {
